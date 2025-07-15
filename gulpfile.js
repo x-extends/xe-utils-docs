@@ -147,12 +147,12 @@ gulp.task('build_v3_zip', () => {
   return gulp.src([
     'docs/xe-utils/**'
   ], { base: './docs/' })
-    .pipe(zip('docs_v3.zip'))
+    .pipe(zip('docs_util3.zip'))
     .pipe(gulp.dest('./'))
 })
 
 gulp.task('build_all_zip', () => {
   return gulp.src('docs/**')
-    .pipe(zip('docs.zip'))
+    .pipe(zip('util_docs.zip'))
     .pipe(gulp.dest('./'))
 })
