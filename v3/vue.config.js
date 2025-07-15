@@ -1,7 +1,7 @@
 const { defineConfig } = require('@vue/cli-service')
 const XEUtils = require('xe-utils')
 
-process.env.VUE_APP_PAGE_TITLE = 'XE 函数库工具栏'
+process.env.VUE_APP_PAGE_TITLE = 'XE 函数库工具类'
 process.env.VUE_APP_DATE_NOW = Date.now()
 process.env.VUE_APP_DATE_DATE = XEUtils.toDateString(process.env.VUE_APP_DATE_NOW, 'yyyy-MM-dd HH:mm:ss')
 
