@@ -70,272 +70,37 @@ gulp.task('clear_docs_temp', () => {
   ], { force: true })
 })
 
-gulp.task('copy_other3_temp', () => {
-  return gulp.src('other3/dist/**')
-    .pipe(gulp.dest('_temp/other3'))
-})
-gulp.task('copy_other3_index', gulp.series('copy_other3_temp', () => {
-  return gulp.src('other3/dist/index.html')
-    .pipe(replace('</head>', enableAd ? `${adScript}${isForceAd ? adCheckScript : ''}</head>`: '</head>'))
-    .pipe(replace('</body>', `${enableSponsors ? ssTmplScript : ''}${ enableSponsors ? sponsorsTmplScript : ''}${enableAd ? adTmplScript : ''}</body>`))
-    .pipe(gulp.dest('_temp/other3'))
-    .pipe(rename({
-      basename: '404'
-    }))
-    .pipe(gulp.dest('_temp/other3'))
-}))
-gulp.task('copy_other3_docs', gulp.series('copy_other3_index', () => {
-  return gulp.src('_temp/other3/**')
-    .pipe(gulp.dest('docs/other3'))
-}, () => {
-  return gulp.src([
-    '_temp/other3/**/*.html',
-  ], { base: './_temp/' })
-    .pipe(replace('</head>', `${hmScript}</head>`))
-    .pipe(gulp.dest('docs'))
-}))
-
-gulp.task('copy_other4_temp', () => {
-  return gulp.src('other4/dist/**')
-    .pipe(gulp.dest('_temp/other4'))
-})
-gulp.task('copy_other4_index', gulp.series('copy_other4_temp', () => {
-  return gulp.src('other4/dist/index.html')
-    .pipe(replace('</head>', enableAd ? `${adScript}${isForceAd ? adCheckScript : ''}</head>`: '</head>'))
-    .pipe(replace('</body>', `${enableSponsors ? ssTmplScript : ''}${ enableSponsors ? sponsorsTmplScript : ''}${enableAd ? adTmplScript : ''}</body>`))
-    .pipe(gulp.dest('_temp/other4'))
-    .pipe(rename({
-      basename: '404'
-    }))
-    .pipe(gulp.dest('_temp/other4'))
-}))
-gulp.task('copy_other4_docs', gulp.series('copy_other4_index', () => {
-  return gulp.src('_temp/other4/**')
-    .pipe(gulp.dest('docs/other4'))
-}, () => {
-  return gulp.src([
-    '_temp/other4/**/*.html',
-  ], { base: './_temp/' })
-    .pipe(replace('</head>', `${hmScript}</head>`))
-    .pipe(gulp.dest('docs'))
-}))
-
-gulp.task('copy_v1_temp', () => {
-  return gulp.src('v1/dist/**')
-    .pipe(gulp.dest('_temp/v1'))
-})
-gulp.task('copy_v1_index', gulp.series('copy_v1_temp', () => {
-  return gulp.src('v1/dist/index.html')
-  .pipe(replace('</head>', enableAd ? `${adScript}${isForceAd ? adCheckScript : ''}</head>`: '</head>'))
-  .pipe(replace('</body>', `${enableSponsors ? ssTmplScript : ''}${ enableSponsors ? sponsorsTmplScript : ''}${enableAd ? adTmplScript : ''}</body>`))
-  .pipe(gulp.dest('_temp/v1'))
-    .pipe(rename({
-      basename: '404'
-    }))
-    .pipe(gulp.dest('_temp/v1'))
-}))
-gulp.task('copy_v1_docs', gulp.series('copy_v1_index', () => {
-  return gulp.src('_temp/v1/**')
-    .pipe(gulp.dest('docs/v1'))
-}, () => {
-  return gulp.src([
-    '_temp/v1/**/*.html',
-  ], { base: './_temp/' })
-    .pipe(replace('</head>', `${hmScript}</head>`))
-    .pipe(gulp.dest('docs'))
-}))
-
-
-gulp.task('copy_v2_temp', () => {
-  return gulp.src('v2/dist/**')
-    .pipe(gulp.dest('_temp/v2'))
-})
-gulp.task('copy_v2_index', gulp.series('copy_v2_temp', () => {
-  return gulp.src('v2/dist/index.html')
-  .pipe(replace('</head>', enableAd ? `${adScript}${isForceAd ? adCheckScript : ''}</head>`: '</head>'))
-  .pipe(replace('</body>', `${enableSponsors ? ssTmplScript : ''}${ enableSponsors ? sponsorsTmplScript : ''}${enableAd ? adTmplScript : ''}</body>`))
-  .pipe(gulp.dest('_temp/v2'))
-    .pipe(rename({
-      basename: '404'
-    }))
-    .pipe(gulp.dest('_temp/v2'))
-}))
-gulp.task('copy_v2_docs', gulp.series('copy_v2_index', () => {
-  return gulp.src('_temp/v2/**')
-    .pipe(gulp.dest('docs/v2'))
-}, () => {
-  return gulp.src([
-    '_temp/v2/**/*.html',
-  ], { base: './_temp/' })
-    .pipe(replace('</head>', `${hmScript}</head>`))
-    .pipe(gulp.dest('docs'))
-}))
-
-
 gulp.task('copy_v3_temp', () => {
   return gulp.src('v3/dist/**')
-    .pipe(gulp.dest('_temp/v3'))
+    .pipe(gulp.dest('_temp/xe-utils'))
 })
 gulp.task('copy_v3_index', gulp.series('copy_v3_temp', () => {
   return gulp.src('v3/dist/index.html')
     .pipe(replace('</head>', enableAd ? `${adScript}${isForceAd ? adCheckScript : ''}</head>`: '</head>'))
     .pipe(replace('</body>', `${enableSponsors ? ssTmplScript : ''}${ enableSponsors ? sponsorsTmplScript : ''}${enableAd ? adTmplScript : ''}</body>`))
-    .pipe(gulp.dest('_temp/v3'))
+    .pipe(gulp.dest('_temp/xe-utils'))
     .pipe(rename({
       basename: '404'
     }))
-    .pipe(gulp.dest('_temp/v3'))
+    .pipe(gulp.dest('_temp/xe-utils'))
 }))
 gulp.task('copy_v3_docs', gulp.series('copy_v3_index', () => {
-  return gulp.src('_temp/v3/**')
-    .pipe(gulp.dest('docs/v3'))
+  return gulp.src('_temp/xe-utils/**')
+    .pipe(gulp.dest('docs/xe-utils'))
 }, () => {
   return gulp.src([
-    '_temp/v3/**/*.html',
+    '_temp/xe-utils/**/*.html',
   ], { base: './_temp/' })
     .pipe(replace('</head>', `${hmScript}</head>`))
     .pipe(gulp.dest('docs'))
 }))
 
-gulp.task('copy_v3d8_temp', () => {
-  return gulp.src('v3.8/dist/**')
-    .pipe(gulp.dest('_temp/v3.8'))
-})
-gulp.task('copy_v3d8_index', gulp.series('copy_v3d8_temp', () => {
-  return gulp.src('v3.8/dist/index.html')
-    .pipe(replace('</head>', enableAd ? `${adScript}${isForceAd ? adCheckScript : ''}</head>`: '</head>'))
-    .pipe(replace('</body>', `${enableSponsors ? ssTmplScript : ''}${ enableSponsors ? sponsorsTmplScript : ''}${enableAd ? adTmplScript : ''}</body>`))
-    .pipe(gulp.dest('_temp/v3.8'))
-    .pipe(rename({
-      basename: '404'
-    }))
-    .pipe(gulp.dest('_temp/v3.8'))
-}))
-gulp.task('copy_v3d8_docs', gulp.series('copy_v3d8_index', () => {
-  return gulp.src('_temp/v3.8/**')
-    .pipe(gulp.dest('docs/v3.8'))
-}, () => {
-  return gulp.src([
-    '_temp/v3.8/**/*.html',
-  ], { base: './_temp/' })
-    .pipe(replace('</head>', `${hmScript}</head>`))
-    .pipe(gulp.dest('docs'))
-}))
-
-gulp.task('copy_v3_old_temp', () => {
-  return gulp.src('v3_old/dist/**')
-    .pipe(gulp.dest('_temp/v3_old'))
-})
-gulp.task('copy_v3_old_index', gulp.series('copy_v3_old_temp', () => {
-  return gulp.src('v3_old/dist/index.html')
-    .pipe(replace('</head>', enableAd ? `${adScript}${isForceAd ? adCheckScript : ''}</head>`: '</head>'))
-    .pipe(replace('</body>', `${enableSponsors ? ssTmplScript : ''}${ enableSponsors ? sponsorsTmplScript : ''}${enableAd ? adTmplScript : ''}</body>`))
-    .pipe(gulp.dest('_temp/v3_old'))
-    .pipe(rename({
-      basename: '404'
-    }))
-    .pipe(gulp.dest('_temp/v3_old'))
-}))
-gulp.task('copy_v3_old_docs', gulp.series('copy_v3_old_index', () => {
-  return gulp.src('_temp/v3_old/**')
-    .pipe(gulp.dest('docs/v3_old'))
-}, () => {
-  return gulp.src([
-    '_temp/v3_old/**/*.html',
-  ], { base: './_temp/' })
-    .pipe(replace('</head>', `${hmScript}</head>`))
-    .pipe(gulp.dest('docs'))
-}))
-
-gulp.task('copy_v4d6_temp', () => {
-  return gulp.src('v4.6/dist/**')
-    .pipe(gulp.dest('_temp/v4.6'))
-})
-gulp.task('copy_v4d6_index', gulp.series('copy_v4d6_temp', () => {
-  return gulp.src('v4.6/dist/index.html')
-    .pipe(replace('</head>', enableAd ? `${adScript}${isForceAd ? adCheckScript : ''}</head>`: '</head>'))
-    .pipe(replace('</body>', `${enableSponsors ? ssTmplScript : ''}${ enableSponsors ? sponsorsTmplScript : ''}${enableAd ? adTmplScript : ''}</body>`))
-    .pipe(gulp.dest('_temp/v4.6'))
-    .pipe(rename({
-      basename: '404'
-    }))
-    .pipe(gulp.dest('_temp/v4.6'))
-}))
-gulp.task('copy_v4d6_docs', gulp.series('copy_v4d6_index', () => {
-  return gulp.src('_temp/v4.6/**')
-    .pipe(gulp.dest('docs/v4.6'))
-}, () => {
-  return gulp.src([
-    '_temp/v4.6/**/*.html',
-  ], { base: './_temp/' })
-    .pipe(replace('</head>', `${hmScript}</head>`))
-    .pipe(gulp.dest('docs'))
-}))
-
-gulp.task('copy_v4_old_temp', () => {
-  return gulp.src('v4_old/dist/**')
-    .pipe(gulp.dest('_temp/v4_old'))
-})
-gulp.task('copy_v4_old_index', gulp.series('copy_v4_old_temp', () => {
-  return gulp.src('v4_old/dist/index.html')
-    .pipe(replace('</head>', enableAd ? `${adScript}${isForceAd ? adCheckScript : ''}</head>`: '</head>'))
-    .pipe(replace('</body>', `${enableSponsors ? ssTmplScript : ''}${ enableSponsors ? sponsorsTmplScript : ''}${enableAd ? adTmplScript : ''}</body>`))
-    .pipe(gulp.dest('_temp/v4_old'))
-    .pipe(rename({
-      basename: '404'
-    }))
-    .pipe(gulp.dest('_temp/v4_old'))
-}))
-gulp.task('copy_v4_old_docs', gulp.series('copy_v4_old_index', () => {
-  return gulp.src('_temp/v4_old/**')
-    .pipe(gulp.dest('docs/v4_old'))
-}, () => {
-  return gulp.src([
-    '_temp/v4_old/**/*.html',
-  ], { base: './_temp/' })
-    .pipe(replace('</head>', `${hmScript}</head>`))
-    .pipe(gulp.dest('docs'))
-}))
-
-gulp.task('copy_v4_temp', () => {
-  return gulp.src('v4/dist/**')
-    .pipe(gulp.dest('_temp/v4'))
-})
-gulp.task('copy_v4_index', gulp.series('copy_v4_temp', () => {
-  return gulp.src('v4/dist/index.html')
-    .pipe(replace('</head>', enableAd ? `${adScript}${isForceAd ? adCheckScript : ''}</head>`: '</head>'))
-    .pipe(replace('</body>', `${enableSponsors ? ssTmplScript : ''}${ enableSponsors ? sponsorsTmplScript : ''}${enableAd ? adTmplScript : ''}</body>`))
-    .pipe(gulp.dest('_temp/v4'))
-    .pipe(rename({
-      basename: '404'
-    }))
-    .pipe(gulp.dest('_temp/v4'))
-}))
-gulp.task('copy_v4_docs', gulp.series('copy_v4_index', () => {
-  return gulp.src('_temp/v4/**')
-    .pipe(gulp.dest('docs/v4'))
-}, () => {
-  return gulp.src([
-    '_temp/v4/**/*.html',
-  ], { base: './_temp/' })
-    .pipe(replace('</head>', `${hmScript}</head>`))
-    .pipe(gulp.dest('docs'))
-}))
-
-gulp.task('copy_docs_index', gulp.series('copy_other3_index', 'copy_other4_index', 'copy_v1_index', 'copy_v2_index', 'copy_v3_index', 'copy_v3d8_index', 'copy_v3_old_index', 'copy_v4d6_index', 'copy_v4_old_index', 'copy_v4_index', () => {
+gulp.task('copy_docs_index', gulp.series('copy_v3_index', () => {
   return gulp.src('_temp/**')
     .pipe(gulp.dest('docs'))
 }, () => {
   return gulp.src([
-    '_temp/other3/**/*.html',
-    '_temp/other4/**/*.html',
-    '_temp/v1/**/*.html',
-    '_temp/v2/**/*.html',
-    '_temp/v3/**/*.html',
-    '_temp/v3.8/**/*.html',
-    '_temp/v4.6/**/*.html',
-    '_temp/v4_old/**/*.html',
-    '_temp/v4/**/*.html',
+    '_temp/xe-utils/**/*.html'
   ], { base: './_temp/' })
     .pipe(replace('</head>', `${hmScript}</head>`))
     .pipe(gulp.dest('docs'))
@@ -358,69 +123,15 @@ gulp.task('build_css_unicode', () => {
 
 gulp.task('build_latest_docs', () => {
   return gulp.src([
-    'docs/v4/*.html',
-    'docs/v4/*.ico',
-    'docs/v4/*.png',
-    'docs/v4/*.txt'
+    'docs/xe-utils/*.html',
+    'docs/xe-utils/*.ico',
+    'docs/xe-utils/*.png',
+    'docs/xe-utils/*.txt'
   ])
     .pipe(gulp.dest('docs'))
 })
 
-gulp.task('build_other3_docs', gulp.series('clear_docs_temp', 'copy_other3_docs', 'build_css_unicode', () => {
-  return del([
-    '_temp'
-  ], { force: true })
-}))
-
-gulp.task('build_other4_docs', gulp.series('clear_docs_temp', 'copy_other4_docs', 'build_css_unicode', () => {
-  return del([
-    '_temp'
-  ], { force: true })
-}))
-
-gulp.task('build_v1_docs', gulp.series('clear_docs_temp', 'copy_v1_docs', 'build_css_unicode', () => {
-  return del([
-    '_temp'
-  ], { force: true })
-}))
-
-gulp.task('build_v2_docs', gulp.series('clear_docs_temp', 'copy_v2_docs', 'build_css_unicode', () => {
-  return del([
-    '_temp'
-  ], { force: true })
-}))
-
 gulp.task('build_v3_docs', gulp.series('clear_docs_temp', 'copy_v3_docs', 'build_css_unicode', () => {
-  return del([
-    '_temp'
-  ], { force: true })
-}))
-
-gulp.task('build_v3d8_docs', gulp.series('clear_docs_temp', 'copy_v3d8_docs', 'build_css_unicode', () => {
-  return del([
-    '_temp'
-  ], { force: true })
-}))
-
-gulp.task('build_v3_old_docs', gulp.series('clear_docs_temp', 'copy_v3_old_docs', 'build_css_unicode', () => {
-  return del([
-    '_temp'
-  ], { force: true })
-}))
-
-gulp.task('build_v4_docs', gulp.series('clear_docs_temp', 'copy_v4_docs', 'build_latest_docs', 'build_css_unicode', () => {
-  return del([
-    '_temp'
-  ], { force: true })
-}))
-
-gulp.task('build_v4d6_docs', gulp.series('clear_docs_temp', 'copy_v4d6_docs','build_css_unicode', () => {
-  return del([
-    '_temp'
-  ], { force: true })
-}))
-
-gulp.task('build_v4_old_docs', gulp.series('clear_docs_temp', 'copy_v4_old_docs', 'build_css_unicode', () => {
   return del([
     '_temp'
   ], { force: true })
@@ -432,86 +143,11 @@ gulp.task('build_all_docs', gulp.series('clear_docs_temp', 'copy_docs_index', 'b
   ], { force: true })
 }))
 
-gulp.task('build_other3_zip', () => {
-  return gulp.src([
-    'docs/other3/**'
-  ], { base: './docs/' })
-    .pipe(zip('docs_other3.zip'))
-    .pipe(gulp.dest('./'))
-})
-
-gulp.task('build_other4_zip', () => {
-  return gulp.src([
-    'docs/other4/**'
-  ], { base: './docs/' })
-    .pipe(zip('docs_other4.zip'))
-    .pipe(gulp.dest('./'))
-})
-
-gulp.task('build_v1_zip', () => {
-  return gulp.src([
-    'docs/v1/**'
-  ], { base: './docs/' })
-    .pipe(zip('docs_v1.zip'))
-    .pipe(gulp.dest('./'))
-})
-
-gulp.task('build_v2_zip', () => {
-  return gulp.src([
-    'docs/v2/**'
-  ], { base: './docs/' })
-    .pipe(zip('docs_v2.zip'))
-    .pipe(gulp.dest('./'))
-})
-
 gulp.task('build_v3_zip', () => {
   return gulp.src([
-    'docs/v3/**'
+    'docs/xe-utils/**'
   ], { base: './docs/' })
     .pipe(zip('docs_v3.zip'))
-    .pipe(gulp.dest('./'))
-})
-
-gulp.task('build_v3d8_zip', () => {
-  return gulp.src([
-    'docs/v3.8/**'
-  ], { base: './docs/' })
-    .pipe(zip('docs_v3.8.zip'))
-    .pipe(gulp.dest('./'))
-})
-
-gulp.task('build_v3_old_zip', () => {
-  return gulp.src([
-    'docs/v3_old/**'
-  ], { base: './docs/' })
-    .pipe(zip('docs_v3_old.zip'))
-    .pipe(gulp.dest('./'))
-})
-
-gulp.task('build_v4_zip', () => {
-  return gulp.src([
-    'docs/v4/**',
-    'docs/*'
-  ], { base: './docs/' })
-    .pipe(zip('docs_v4.zip'))
-    .pipe(gulp.dest('./'))
-})
-
-gulp.task('build_v4d6_zip', () => {
-  return gulp.src([
-    'docs/v4.6/**',
-    'docs/*'
-  ], { base: './docs/' })
-    .pipe(zip('docs_v4.6.zip'))
-    .pipe(gulp.dest('./'))
-})
-
-gulp.task('build_v4_old_zip', () => {
-  return gulp.src([
-    'docs/v4_old/**',
-    'docs/*'
-  ], { base: './docs/' })
-    .pipe(zip('docs_v4_old.zip'))
     .pipe(gulp.dest('./'))
 })
 
