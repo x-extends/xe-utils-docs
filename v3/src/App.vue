@@ -1,32 +1,15 @@
 <template>
-  <VxeLayoutContainer :size="componentsSize">
-    <RouterView />
-    <vxe-loading :model-value="pageLoading"></vxe-loading>
-  </VxeLayoutContainer>
+  <RouterView />
 </template>
 
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { useAppStore } from '@/store/app'
-// import axios from 'axios'
-
-const appStore = useAppStore()
-// const siteBaseUrl = computed(() => appStore.siteBaseUrl)
-const pageLoading = computed(() => appStore.pageLoading)
-const componentsSize = computed(() => appStore.componentsSize)
-
-// axios.get(`${siteBaseUrl.value}/component-api/system-config.json?v=${process.env.VUE_APP_DATE_NOW}`).then(res => {
-//   appStore.setSystemConfig(res.data)
-// })
-// axios.get(`${siteBaseUrl.value}/component-api/vxe-version.json?v=${process.env.VUE_APP_DATE_NOW}`).then(res => {
-//   appStore.setVersionConfig(res.data)
-// })
 </script>
 
 <style lang="scss">
 #app {
   height: 100%;
   overflow: auto;
+  background: #fff;
 }
 html, body {
   height: 100%;
@@ -36,6 +19,7 @@ html, body {
   font-size: 14px;
   overflow: hidden;
   font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\8F6F\96C5\9ED1,Arial,sans-serif;
+  background: #fff;
   * {
     box-sizing: border-box;
   }
