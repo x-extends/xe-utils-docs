@@ -1,6 +1,6 @@
-@import './theme/light.scss';
-@import './theme/dark.scss';
-@import './base.scss';
+@use './theme/light.scss';
+@use './theme/dark.scss';
+@use './base.scss';
 
 html,
 body,
@@ -50,8 +50,9 @@ body {
   color: red;
   text-decoration: line-through;
 }
+
 .demo-page-wrapper {
-  height: calc(100vh - 380px);
+  height: calc(100vh - 400px);
   max-width: 1800px;
   overflow: hidden;
 }

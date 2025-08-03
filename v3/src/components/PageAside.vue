@@ -16,7 +16,7 @@
                 children-field="searchResult"
                 trigger="node">
                 <template #title="{ node }">
-                  <vxe-link v-if="node.routerLink" status="primary" :class="[getApiClass(node)]" :router-link="node.routerLink" @click="searchRowClickEvent">
+                  <vxe-link v-if="node.routerLink" status="primary" :data-code="getApiKey(node)" :router-link="node.routerLink" @click="searchRowClickEvent">
                     <span v-html="node.title"></span>
                   </vxe-link>
                   <vxe-link v-else-if="node.linkUrl" status="primary" :href="node.linkUrl" target="_blank">
@@ -39,7 +39,7 @@
       </vxe-pulldown>
     </div>
     <div class="nav-item nav-level1" v-for="(item1, index1) in navList" :key="index1" :class="[{'is-expand': item1.isExpand}]">
-      <div class="nav-name" :class="{'is-plugin': item1.isPlugin, 'is-enterprise': item1.isEnterprise}" :title="item1.title" @click="toggleExpand(item1)">
+      <div class="nav-name" :class="{'is-plugin': item1.isPlugin, 'is-enterprise': item1.isEnterprise}" :title="item1.describe || item1.title" @click="toggleExpand(item1)">
         <vxe-link v-if="item1.routerLink" class="nav-item-link" :status="item1.linkStatus" :router-link="item1.routerLink" :content="item1.title"></vxe-link>
         <vxe-link v-else-if="item1.linkUrl" class="nav-item-link" :status="item1.linkStatus" :href="item1.linkUrl" :target="item1.linkTarget || '_blank'" :content="item1.title"></vxe-link>
         <vxe-link v-else-if="item1.isBack" class="nav-item-link" :status="item1.linkStatus" :content="item1.title" @click="backEvent"></vxe-link>
@@ -53,8 +53,8 @@
       </div>
       <div v-if="item1.isExpand && item1.children && item1.children.length" class="nav-subs">
         <div class="nav-item nav-level2" v-for="(item2, index2) in item1.children" :key="`${index1}${index2}`" :class="[{'is-expand': item2.isExpand}]">
-          <div class="nav-name" :class="{'is-plugin': item2.isPlugin, 'is-enterprise': item2.isEnterprise}" :title="item2.title" @click="toggleExpand(item2)">
-            <vxe-link v-if="item2.routerLink" :class="['nav-item-link', getApiClass(item2)]" :router-link="item2.routerLink">
+          <div class="nav-name" :class="{'is-plugin': item2.isPlugin, 'is-enterprise': item2.isEnterprise}" :title="item2.describe || item2.title" @click="toggleExpand(item2)">
+            <vxe-link v-if="item2.routerLink" :class="['nav-item-link']" :data-code="getApiKey(item2)" :router-link="item2.routerLink">
               <span>{{ item2.title }}</span>
               <span v-if="item2.isEnterprise" class="nav-item-enterprise-icon">{{ $t('app.aside.enterpriseVersion') }}</span>
               <span v-else-if="item2.isPlugin" class="nav-item-plugin-icon">{{ $t('app.aside.pluginVersion') }}</span>
@@ -70,8 +70,8 @@
           </div>
           <div v-if="!['API'].includes(item1.title || '') && item2.isExpand && item2.children && item2.children.length" class="nav-subs">
             <div class="nav-item nav-level3" v-for="(item3, index3) in item2.children" :key="`${index1}${index2}${index3}`" :class="[{'is-expand': item3.isExpand}]">
-              <div class="nav-name" :class="{'is-plugin': item3.isPlugin, 'is-enterprise': item3.isEnterprise}" :title="item3.title" @click="toggleExpand(item3)">
-                <vxe-link v-if="item3.routerLink" :class="['nav-item-link', getApiClass(item3)]" :router-link="item3.routerLink">
+              <div class="nav-name" :class="{'is-plugin': item3.isPlugin, 'is-enterprise': item3.isEnterprise}" :title="item3.describe || item3.title" @click="toggleExpand(item3)">
+                <vxe-link v-if="item3.routerLink" :class="['nav-item-link']" :data-code="getApiKey(item3)" :router-link="item3.routerLink">
                   <span>{{ item3.title }}</span>
                   <span v-if="item3.isEnterprise" class="nav-item-enterprise-icon">{{ $t('app.aside.enterpriseVersion') }}</span>
                   <span v-else-if="item3.isPlugin" class="nav-item-plugin-icon">{{ $t('app.aside.pluginVersion') }}</span>
@@ -87,8 +87,8 @@
               </div>
               <div v-if="item3.isExpand && item3.children && item3.children.length" class="nav-subs">
                 <div class="nav-item nav-level4" v-for="(item4, index4) in item3.children" :key="`${index1}${index2}${index3}${index4}`" :class="[{'is-expand': item4.isExpand}]">
-                  <div class="nav-name" :class="{'is-plugin': item4.isPlugin, 'is-enterprise': item4.isEnterprise}" :title="item4.title" @click="toggleExpand(item4)">
-                    <vxe-link v-if="item4.routerLink" :class="['nav-item-link', getApiClass(item4)]" :router-link="item4.routerLink">
+                  <div class="nav-name" :class="{'is-plugin': item4.isPlugin, 'is-enterprise': item4.isEnterprise}" :title="item4.describe || item4.title" @click="toggleExpand(item4)">
+                    <vxe-link v-if="item4.routerLink" :class="['nav-item-link']" :data-code="getApiKey(item4)" :router-link="item4.routerLink">
                       <span>{{ item4.title }}</span>
                       <span v-if="item4.isEnterprise" class="nav-item-enterprise-icon">{{ $t('app.aside.enterpriseVersion') }}</span>
                       <span v-else-if="item4.isPlugin" class="nav-item-plugin-icon">{{ $t('app.aside.pluginVersion') }}</span>
@@ -104,8 +104,8 @@
                   </div>
                   <div v-if="item4.isExpand && item4.children && item4.children.length" class="nav-subs">
                     <div class="nav-item nav-level5" v-for="(item5, index5) in item4.children" :key="`${index1}${index2}${index3}${index5}`" :class="[{'is-expand': item5.isExpand}]">
-                      <div class="nav-name" :class="{'is-plugin': item5.isPlugin, 'is-enterprise': item5.isEnterprise}" :title="item5.title" @click="toggleExpand(item5)">
-                        <vxe-link v-if="item5.routerLink" :class="['nav-item-link', getApiClass(item5)]" :router-link="item5.routerLink">
+                      <div class="nav-name" :class="{'is-plugin': item5.isPlugin, 'is-enterprise': item5.isEnterprise}" :title="item5.describe || item5.title" @click="toggleExpand(item5)">
+                        <vxe-link v-if="item5.routerLink" :class="['nav-item-link']" :data-code="getApiKey(item5)" :router-link="item5.routerLink">
                           <span>{{ item5.title }}</span>
                           <span v-if="item5.isEnterprise" class="nav-item-enterprise-icon">{{ $t('app.aside.enterpriseVersion') }}</span>
                           <span v-else-if="item5.isPlugin" class="nav-item-plugin-icon">{{ $t('app.aside.pluginVersion') }}</span>
@@ -135,7 +135,8 @@
 import { ref, watch, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from '@/store/app'
-import { navConfigList, NavVO } from '@/common/nav-config'
+import { navConfigList } from '@/common/nav-config'
+import { NavVO } from '@/common/nav'
 import { VxeTreeInstance } from 'vxe-pc-ui'
 import i18n from '@/i18n'
 import XEUtils from 'xe-utils'
@@ -211,11 +212,13 @@ const handleSearch = () => {
   if (filterName) {
     const filterRE = new RegExp(`${filterName}|${XEUtils.camelCase(filterName)}|${XEUtils.kebabCase(filterName)}`, 'i')
     const rest = XEUtils.searchTree(navList.value, (item) => {
-      return filterRE.test(item.title || '') || !!(item.keywords && item.keywords.split(',').some(key => filterRE.test(key)))
+      return filterRE.test(item.title || '') || (item.describe && filterRE.test(item.describe || '')) || !!(item.keywords && item.keywords.split(',').some(key => filterRE.test(key)))
     }, { children: 'children', mapChildren: 'searchResult' })
     XEUtils.eachTree(rest, (item) => {
       if (filterRE.test(item.title || '')) {
         item.title = `${item.title || ''}`.replace(filterRE, (match) => `<span class="keyword-lighten">${match}</span>`)
+      } else if (item.describe && filterRE.test(item.describe || '')) {
+        item.title = `${item.describe}`.replace(filterRE, (match) => `<span class="keyword-lighten">${match}</span>`)
       } else if (item.keywords && item.keywords.split(',').some(key => filterRE.test(key))) {
         item.title = `<span>${item.title || ''}<span class="keyword-lighten"> ...${filterName}...</span></span>`
       }
@@ -273,24 +276,27 @@ const backEvent = () => {
   router.back()
 }
 
-const getApiClass = (item: NavVO) => {
+const getApiKey = (item: NavVO) => {
   if (!item.routerLink) {
     return ''
   }
+  if (item.routerLink.name === 'EnterprisePreview') {
+    return `${item.routerLink.name}-${item.routerLink.params?.previewCode}-${item.routerLink.query?.previewPath}`.toLowerCase()
+  }
   if (item.isAllAPI) {
-    return `${item.routerLink.name}-all-${item.name}`
+    return `${item.routerLink.name}-all-${item.name}`.toLowerCase()
   }
   if (item.isSelfAPI) {
-    return `${item.routerLink.name}-self-${item.name}`
+    return `${item.routerLink.name}-self-${item.name}`.toLowerCase()
   }
-  return `${item.routerLink.name}`
+  return `${item.routerLink.name}`.toLowerCase()
 }
 
 const scrollToNav = (item: NavVO) => {
   nextTick(() => {
     const asideElem = asideElemRef.value
     if (asideElem && item.routerLink) {
-      const linkEl = asideElem.querySelector(`.nav-item-link.${getApiClass(item)}`)
+      const linkEl = asideElem.querySelector(`[data-code="${getApiKey(item)}"]`)
       if (linkEl) {
         if ((linkEl as any).scrollIntoViewIfNeeded) {
           (linkEl as any).scrollIntoViewIfNeeded()
@@ -349,7 +355,9 @@ watch(() => i18n.global.locale, () => {
 createNavList()
 updateExpand()
 
-appStore.updateComponentApiJSON()
+if (!appStore.isUtilDocs) {
+  appStore.updateComponentApiJSON()
+}
 </script>
 
 <style lang="scss" scoped>
@@ -421,18 +429,12 @@ appStore.updateComponentApiJSON()
       border-right-color: #f5c28f;
     }
   }
-  .nav-item-plugin-icon {
+  .nav-item-plugin-icon,
+  .nav-item-template-icon {
     color: #efebeb;
     background-color: #3eb910;
     &::after {
       border-right-color: #3eb910;
-    }
-  }
-  .nav-item-template-icon {
-    color: #efebeb;
-    background-color: #b31a20;
-    &::after {
-      border-right-color: #b31a20;
     }
   }
   ::v-deep(.nav-item) {

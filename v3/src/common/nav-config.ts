@@ -1,29 +1,35 @@
-export interface NavVO {
-  title?: string
-  name?: string
-  i18nKey?: string
-  isAllAPI?: boolean
-  isSelfAPI?: boolean
-  isExpand?: boolean
-  isNew?: boolean
-  isUnpublished?: boolean
-  isEnterprise?: boolean
-  isPlugin?: boolean
-  isTemplate?: boolean
-  routerLink?: {
-    name: string
-    params?: Record<string, string | number>
-    query?: Record<string, string | number>
+import { NavVO } from './nav'
+import { funcGroup } from './func-api'
+
+export const navConfigList: NavVO[] = [
+  {
+    i18nKey: 'app.aside.menu.guide',
+    isExpand: true,
+    children: [
+      {
+        i18nKey: 'app.aside.menu.insrall',
+        isExpand: true,
+        children: [
+          { i18nKey: 'app.aside.menu.useNPM', routerLink: { name: 'StartUtilInstall' } },
+          { i18nKey: 'app.aside.menu.useCDN', routerLink: { name: 'StartUtilCDN' } }
+        ]
+      },
+      { i18nKey: 'app.aside.menu.globalConfig', routerLink: { name: 'StartConfig' } }
+    ]
   }
-  linkUrl?: string
-  linkTarget?: '_self' | '_blank'
-  linkStatus?: 'warning' | 'success' | 'error'
-  isBack?: boolean
-  keywords?: string
-  children?: NavVO[]
-}
+]
 
-export const otherUrl = `${process.env.VUE_APP_SITE_PLUGIN_URL}/other${process.env.VUE_APP_VXE_VERSION}`
-export const tablePluginDocsUrl = `${process.env.VUE_APP_SITE_PLUGIN_URL}/pluginDocs/table${process.env.VUE_APP_VXE_VERSION}`
-
-export const navConfigList: NavVO[] = []
+funcGroup.forEach(group => {
+  navConfigList.push({
+    title: group.label,
+    isExpand: group.expand,
+    children: group.children.map(item => {
+      return {
+        title: item.name,
+        routerLink: { name: 'DocsApi', params: { name: item.name } },
+        describe: item.title,
+        isSelfAPI: true
+      }
+    })
+  })
+})

@@ -1,101 +1,20 @@
-<template>
-  <div class="page-container">
-    <div class="page-header">
-      <div class="header-left">
-        <a class="logo" href="/">
-          <img src="/logo.png">
-          <span class="title">函数库工具类</span>
-        </a>
-        <a :href='`https://gitee.com/x-extends/xe-utils/stargazers`'>
-          <img :src='`https://gitee.com/x-extends/xe-utils/badge/star.svg?theme=gvp`' alt='star'>
-        </a>
-        <a :href="`http://npm-stat.com/charts.html?package=xe-utils`">
-          <img :src="`https://img.shields.io/npm/dm/xe-utils.svg`">
-        </a>
-        <a :href="`https://github.com/x-extends/xe-utils/stargazers`">
-          <img :src="`https://img.shields.io/github/stars/x-extends/xe-utils.svg`">
-        </a>
-      </div>
-      <div class="header-middle"></div>
-      <div class="header-right">
-      </div>
-    </div>
-    <div class="page-body">
-      <div class="aside">
-        <div class="header">
-          <div class="search-wrapper">
-            <input class="search-input" v-model="filterName" type="search" placeholder="API 搜索">
-          </div>
-        </div>
-        <ul>
-          <li class="menu-item" v-for="group in apiList" :key="group.id">
-            <a class="menu-link" @click="group.expand = !group.expand">{{ group.label }}</a>
-            <ul class="child-menu" v-show="group.expand">
-              <li class="menu-item" v-for="item in group.children" :key="item.id" :class="{active: selected === item}">
-                <a class="menu-link" @click="menuLinkEvent(item)" v-html="item.htmlVal"></a>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <div class="body">
-        <div class="body-inner">
-          <div v-for="group in apiList" :key="group.id">
-            <div class="api-item" v-for="item in group.children" :key="item.id">
-              <p class="title" :id="item.name" v-html="`${item.htmlVal } (${ item.args }) ${ item.title}`"></p>
-              <p class="desc" v-html="item.desc"></p>
-              <table class="param-table" border="0" v-if="item.params && item.params.length">
-                <tr v-for="(rows, pIndex) in item.params" :key="pIndex">
-                  <td v-for="(val, vIndex) in rows" :key="vIndex">{{ val }}</td>
-                </tr>
-              </table>
-              <pre>
-                <code class="javascript" v-for="(code,cIndex) in item.codes" :key="cIndex">{{ code }}</code>
-              </pre>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
+export interface FuncAPIConf {
+  name: string
+  args: string
+  title: string
+  desc: string
+  params: string[][]
+  codes: string[]
+}
 
-<script>
-import hljs from 'highlight.js'
-import XEUtils from 'xe-utils'
+export interface FuncAPIGroup {
+  label: string
+  value: string
+  expand: boolean
+  children: FuncAPIConf[]
+}
 
-const allList = [
-  {
-    label: '开发指南',
-    value: 'insert',
-    expand: true,
-    children: [
-      {
-        name: 'NPM 安装',
-        args: '',
-        title: '使用 npm 的方式安装',
-        desc: '',
-        params: [],
-        codes: [
-                `
-                npm install xe-utils
-                `
-        ]
-      },
-      {
-        name: 'CDN 安装',
-        args: '',
-        title: '可以通过第三方开放的 CDN 来引用',
-        desc: '',
-        params: [],
-        codes: [
-                `
-                ${decodeURIComponent('%3Cscript%20src%3D%22https%3A%2F%2Fcdn.jsdelivr.net%2Fnpm%2Fxe-utils%22%3E%3C%2Fscript%3E')}
-                `
-        ]
-      }
-    ]
-  },
+export const funcGroup: FuncAPIGroup[] = [
   {
     label: 'Base',
     value: 'base',
@@ -1218,7 +1137,7 @@ const allList = [
       {
         name: 'arrayIndexOf',
         args: 'obj, val',
-        title: '返回数组第一个索引值，比 indexOf 快',
+        title: '返回数组第一个索引值',
         desc: '',
         params: [],
         codes: [
@@ -1257,7 +1176,7 @@ const allList = [
       {
         name: 'arrayLastIndexOf',
         args: 'obj, val',
-        title: '从最后开始的索引值,返回数组第一个索引值，比 indexOf 快',
+        title: '从最后开始的索引值,返回数组第一个索引值',
         desc: '',
         params: [],
         codes: [
@@ -1324,10 +1243,11 @@ const allList = [
         ]
       },
       {
-        name: 'orderBy | sortBy',
+        name: 'orderBy',
         args: 'arr, fieldConfs [, context]',
         title: '将数组进行排序',
         desc: '',
+        params: [],
         codes: [
                 `
                 // 数值排序
@@ -3304,200 +3224,114 @@ const allList = [
         ]
       }
     ]
-  },
-  {
-    label: 'Setting',
-    value: 'setup',
-    expand: true,
-    children: [
-      {
-        name: 'setup',
-        args: 'options',
-        title: '全局参数设置',
-        desc: '',
-        params: [],
-        codes: [
-                `
-                XEUtils.setup({
-                  cookies: {
-                    path: '/'
-                  },
-                  treeOptions: {
-                    strict: false,
-                    parentKey: 'parentId',
-                    key: 'id',
-                    children: 'children',
-                    data: null
-                  },
-                  parseDateFormat: 'yyyy-MM-dd HH:mm:ss',
-                  parseDateRules : {
-                    q: {
-                      1: '1', // 第一季
-                      2: '2', // 第二季
-                      3: '3', // 第三季
-                      4: '4' // 第四季
-                    },
-                    E: {
-                      0: '7', // 星期天
-                      1: '1', // 星期一
-                      2: '2', // 星期二
-                      3: '3', // 星期三
-                      4: '4', // 星期四
-                      5: '5', // 星期五
-                      6: '6' // 星期六
-                    }
-                  },
-                  commafyOptions: {
-                    spaceNumber: 3,
-                    separator: ',',
-                    fixed: 0
-                  }
-                })
-                `
-        ]
-      },
-      {
-        name: 'mixin',
-        args: 'func',
-        title: '扩展函数，将您自己的实用函数扩展到 XEUtils',
-        desc: '',
-        params: [],
-        codes: [
-                `
-                XEUtils.mixin({
-                  toDateDiffText (date) {
-                    let currDate = 1544407800000 // '2018-12-10 10:10:00'
-                    let dateDiff = XEUtils.getDateDiff(date, currDate)
-                    if (dateDiff.done) {
-                      if (dateDiff.time < 31536000000) {
-                        if (dateDiff.time < 2592000000) {
-                          if (dateDiff.time < 86400000) {
-                            if (dateDiff.time < 360000) {
-                              if (dateDiff.time < 60000) {
-                                if (dateDiff.time < 10000) {
-                                  return \`刚刚\`
-                                }
-                                return \`\${dateDiff.ss}秒之前\`
-                              }
-                              return \`\${dateDiff.mm}分钟之前\`
-                            }
-                            return \`\${dateDiff.HH}小时之前\`
-                          }
-                          return \`\${dateDiff.dd}天之前\`
-                        }
-                        return \`\${dateDiff.MM}个月之前\`
-                      }
-                      return \`\${dateDiff.yyyy}年之前\`
-                    }
-                    return '错误类型'
-                  }
-                })
-
-                XEUtils.toDateDiffText('2018-12-10 10:09:59') // 刚刚
-                XEUtils.toDateDiffText('2018-12-10 10:09:30') // 30秒之前
-                XEUtils.toDateDiffText('2018-12-10 10:09:30') // 2分钟之前
-                XEUtils.toDateDiffText('2018-12-10 02:10:00') // 8小时之前
-                XEUtils.toDateDiffText('2018-12-09 04:09:30') // 1天之前
-                XEUtils.toDateDiffText('2018-04-09 04:09:30') // 8个月之前
-                XEUtils.toDateDiffText('2016-06-09 04:09:30') // 2年之前
-                `
-        ]
-      }
-    ]
   }
+  // {
+  //   label: 'Setting',
+  //   value: 'setup',
+  //   expand: true,
+  //   children: [
+  //     {
+  //       name: 'setup',
+  //       args: 'options',
+  //       title: '全局参数设置',
+  //       desc: '',
+  //       params: [],
+  //       codes: [
+  //               `
+  //               XEUtils.setup({
+  //                 cookies: {
+  //                   path: '/'
+  //                 },
+  //                 treeOptions: {
+  //                   strict: false,
+  //                   parentKey: 'parentId',
+  //                   key: 'id',
+  //                   children: 'children',
+  //                   data: null
+  //                 },
+  //                 parseDateFormat: 'yyyy-MM-dd HH:mm:ss',
+  //                 parseDateRules : {
+  //                   q: {
+  //                     1: '1', // 第一季
+  //                     2: '2', // 第二季
+  //                     3: '3', // 第三季
+  //                     4: '4' // 第四季
+  //                   },
+  //                   E: {
+  //                     0: '7', // 星期天
+  //                     1: '1', // 星期一
+  //                     2: '2', // 星期二
+  //                     3: '3', // 星期三
+  //                     4: '4', // 星期四
+  //                     5: '5', // 星期五
+  //                     6: '6' // 星期六
+  //                   }
+  //                 },
+  //                 commafyOptions: {
+  //                   spaceNumber: 3,
+  //                   separator: ',',
+  //                   fixed: 0
+  //                 }
+  //               })
+  //               `
+  //       ]
+  //     },
+  //     {
+  //       name: 'mixin',
+  //       args: 'func',
+  //       title: '扩展函数，将您自己的实用函数扩展到 XEUtils',
+  //       desc: '',
+  //       params: [],
+  //       codes: [
+  //               `
+  //               XEUtils.mixin({
+  //                 toDateDiffText (date) {
+  //                   let currDate = 1544407800000 // '2018-12-10 10:10:00'
+  //                   let dateDiff = XEUtils.getDateDiff(date, currDate)
+  //                   if (dateDiff.done) {
+  //                     if (dateDiff.time < 31536000000) {
+  //                       if (dateDiff.time < 2592000000) {
+  //                         if (dateDiff.time < 86400000) {
+  //                           if (dateDiff.time < 360000) {
+  //                             if (dateDiff.time < 60000) {
+  //                               if (dateDiff.time < 10000) {
+  //                                 return \`刚刚\`
+  //                               }
+  //                               return \`\${dateDiff.ss}秒之前\`
+  //                             }
+  //                             return \`\${dateDiff.mm}分钟之前\`
+  //                           }
+  //                           return \`\${dateDiff.HH}小时之前\`
+  //                         }
+  //                         return \`\${dateDiff.dd}天之前\`
+  //                       }
+  //                       return \`\${dateDiff.MM}个月之前\`
+  //                     }
+  //                     return \`\${dateDiff.yyyy}年之前\`
+  //                   }
+  //                   return '错误类型'
+  //                 }
+  //               })
+
+  //               XEUtils.toDateDiffText('2018-12-10 10:09:59') // 刚刚
+  //               XEUtils.toDateDiffText('2018-12-10 10:09:30') // 30秒之前
+  //               XEUtils.toDateDiffText('2018-12-10 10:09:30') // 2分钟之前
+  //               XEUtils.toDateDiffText('2018-12-10 02:10:00') // 8小时之前
+  //               XEUtils.toDateDiffText('2018-12-09 04:09:30') // 1天之前
+  //               XEUtils.toDateDiffText('2018-04-09 04:09:30') // 8个月之前
+  //               XEUtils.toDateDiffText('2016-06-09 04:09:30') // 2年之前
+  //               `
+  //       ]
+  //     }
+  //   ]
+  // }
 ]
 
-XEUtils.eachTree(allList, item => {
-  item.htmlVal = item.name
+export const funcList: FuncAPIConf[] = []
+export const funcMaps: Record<string, FuncAPIConf> = {}
+funcGroup.forEach(group => {
+  group.children.forEach(item => {
+    funcList.push(item)
+    funcMaps[item.name] = item
+  })
 })
-
-export default {
-  data () {
-    return {
-      selected: null,
-      filterName: '',
-      list: allList
-    }
-  },
-  computed: {
-    apiList () {
-      if (this.filterName) {
-        const filterName = this.filterName.toLowerCase()
-        const filterRE = new RegExp(filterName, 'gi')
-        const list = XEUtils.searchTree(this.list, item => (item.name || '').toLowerCase().indexOf(filterName) > -1 || (item.title || '').toLowerCase().indexOf(filterName) > -1, { children: 'children' })
-        XEUtils.eachTree(list, item => {
-          item.htmlVal = (item.name || '').replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
-          item.title = (item.title || '').replace(filterRE, match => `<span class="keyword-lighten">${match}</span>`)
-        }, { children: 'children' })
-        return list
-      }
-      return this.list
-    }
-  },
-  watch: {
-    apiList () {
-      this.$nextTick(() => {
-        if (this.apiList.length) {
-          this.selected = this.apiList[0].children[0]
-          Array.from(this.$el.querySelectorAll('pre code')).forEach((block) => {
-            hljs.highlightBlock(block)
-          })
-        }
-      })
-    }
-  },
-  created () {
-    let id = 1
-    XEUtils.eachTree(this.apiList, item => {
-      item.id = id++
-    })
-    this.selected = this.apiList[0].children[0]
-    this.$nextTick(() => {
-      setTimeout(() => {
-        if (this.$route.query.to) {
-          this.toView(document.getElementById(this.$route.query.to))
-        }
-      }, 100)
-    })
-  },
-  mounted () {
-    Array.from(this.$el.querySelectorAll('pre code')).forEach((block) => {
-      hljs.highlightBlock(block)
-    })
-  },
-  methods: {
-    donationEvent () {
-      this.toView(document.getElementById('donation'))
-    },
-    menuLinkEvent (item) {
-      this.selected = item
-      this.toView(document.getElementById(item.name))
-      this.$router.push({
-        name: 'API',
-        query: {
-          to: item.name
-        }
-      })
-    },
-    toView (elem) {
-      if (elem && elem.scrollIntoView) {
-        elem.scrollIntoView()
-      } else if (elem && elem.scrollIntoViewIfNeeded) {
-        elem.scrollIntoViewIfNeeded()
-      }
-    }
-  }
-}
-</script>
-
-<style lang="scss" scoped>
-.is-donation {
-  font-size: 15px;
-  font-weight: 700;
-  color: green;
-}
-.donation-item {
-  padding: 20px 0 600px 0;
-  text-align: center;
-}
-</style>
