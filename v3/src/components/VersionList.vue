@@ -1,35 +1,51 @@
 <template>
-  <div class="version-list">
-    <template v-if="stableVersionList.length">
-      <span class="title">{{  $t('app.aside.stableVersion')}}</span>
-      <vxe-select class="stable-select" v-model="selectStableVersion" :options="stableVersionList"></vxe-select>
-    </template>
-    <template v-if="showBetaVersion">
-      <span class="title">{{  $t('app.aside.latestVersion')}}</span>
-      <vxe-select class="latest-select" v-model="selectBetaVersion" :options="newBetsVersionList"></vxe-select>
-    </template>
+  <div v-if="pluginType && selectPluginVersion" class="version-list">
+    <span class="title">{{ $t('app.aside.stableVersion') }}</span>
+    <span>{{ pluginType }}@{{ selectPluginVersion }}</span>
+    <vxe-link :href="currBuyPluginBUrl" status="primary" target="_blank">{{ $t('app.aside.releaseTitle') }}</vxe-link>
+  </div>
+  <div v-else class="version-list">
+    <span class="title">{{ $t('app.aside.stableVersion') }}</span>
+    <span>{{ packName }}@{{ selectStableVersion }}</span>
+    <span v-if="showBetaVersion" class="title">{{ $t('app.aside.latestVersion') }}</span>
+    <span v-if="showBetaVersion">{{ packName }}@{{ selectBetaVersion }}</span>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
-import XEUtils from 'xe-utils'
+import { ref, computed, inject } from 'vue'
 import { useAppStore } from '@/store/app'
+import XEUtils from 'xe-utils'
+import axios from 'axios'
 
 const appStore = useAppStore()
+const packName = computed(() => appStore.packName)
+const siteBaseUrl = computed(() => appStore.siteBaseUrl)
+const isPluginDocs = computed(() => appStore.isPluginDocs)
+
+const pluginType = inject('pluginType', '' as string)
 
 const stableVersionList = ref<any[]>([])
 const betaVersionList = ref<any[]>([])
 
+const selectPluginVersion = ref('')
 const selectStableVersion = ref('')
 const selectBetaVersion = ref('')
 
+const pluginUrlMaps = ref<Record<string, string>>({})
+
+const currBuyPluginBUrl = computed(() => {
+  if (pluginUrlMaps.value[pluginType]) {
+    return `${appStore.pluginBuyUrl}#${pluginUrlMaps.value[pluginType]}?rl=1`
+  }
+  return appStore.pluginBuyUrl
+})
+
 const showBetaVersion = computed(() => {
   const betaList = betaVersionList.value
-  const stableList = stableVersionList.value
-  if (stableList.length) {
+  if (selectStableVersion.value) {
     if (betaList.length) {
-      const stableNums = stableList[0].value.split('-')[0].split('.')
+      const stableNums = selectStableVersion.value.split('-')[0].split('.')
       const stable1 = XEUtils.toNumber(stableNums[0])
       const stable2 = XEUtils.toNumber(stableNums[1])
       const stable3 = XEUtils.toNumber(stableNums[2])
@@ -48,8 +64,6 @@ const showBetaVersion = computed(() => {
           }
         }
       }
-    } else {
-      return true
     }
   } else {
     return betaList.some((item) => item.value.indexOf('4.') === 0)
@@ -60,9 +74,9 @@ const showBetaVersion = computed(() => {
 const newBetsVersionList = computed(() => {
   const betaList = betaVersionList.value
   const stableList = stableVersionList.value
-  if (stableList.length) {
+  if (selectStableVersion.value) {
     if (betaList.length) {
-      const stableNums = stableList[0].value.split('-')[0].split('.')
+      const stableNums = selectStableVersion.value.split('-')[0].split('.')
       const stable1 = XEUtils.toNumber(stableNums[0])
       const stable2 = XEUtils.toNumber(stableNums[1])
       const stable3 = XEUtils.toNumber(stableNums[2])
@@ -92,10 +106,22 @@ const newBetsVersionList = computed(() => {
 })
 
 const getVersion = () => {
+  if (isPluginDocs.value) {
+    fetch(`${siteBaseUrl.value}/component-api/vxe-plugin-url.json?v=?v=${import.meta.env.VITE_APP_DATE_NOW}`).then(res => {
+      res.json().then(data => {
+        pluginUrlMaps.value = data
+      })
+    })
+    axios.get(`${siteBaseUrl.value}/component-api/vxe-plugin-version.json?v=${import.meta.env.VITE_APP_DATE_NOW}`).then(res => {
+      const vData = res.data || {}
+      const tags = vData[pluginType]
+      selectPluginVersion.value = tags[`v${appStore.docsVersion}-latest`]
+    })
+  }
   fetch(`${import.meta.env.VITE_APP_SERVE_API_URL}/api/npm/versions/${import.meta.env.VITE_APP_PACKAGE_NAME}`, { method: 'GET' })
     .then(response => response.json())
     .then((data) => {
-      const { time, tags } = data
+      const { time, tags } = data || {}
       const stableList = data[`v${appStore.docsVersion}StableList`].map(value => ({ value, label: value }))
       const betaList = data[`v${appStore.docsVersion}BetaList`].map(value => ({ value, label: value }))
       stableVersionList.value = stableList
