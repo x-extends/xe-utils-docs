@@ -1,14 +1,19 @@
 <template>
   <div v-if="pluginType && selectPluginVersion" class="version-list">
-    <span class="title">{{ $t('app.aside.stableVersion') }}</span>
+    <span class="version-title">{{ $t('app.aside.stableVersion') }}</span>
     <span>{{ pluginType }}@{{ selectPluginVersion }}</span>
     <vxe-link :href="currBuyPluginBUrl" status="primary" target="_blank">{{ $t('app.aside.releaseTitle') }}</vxe-link>
   </div>
   <div v-else class="version-list">
-    <span class="title">{{ $t('app.aside.stableVersion') }}</span>
-    <span>{{ packName }}@{{ selectStableVersion }}</span>
-    <span v-if="showBetaVersion" class="title">{{ $t('app.aside.latestVersion') }}</span>
-    <span v-if="showBetaVersion">{{ packName }}@{{ selectBetaVersion }}</span>
+    <span>
+      <span class="version-title">{{ $t('app.aside.stableVersion') }}</span>
+      <span>{{ packName }}@{{ selectStableVersion }}</span>
+    </span>
+    <span v-if="showBetaVersion" style="margin-left: 0.5em;">
+      <span class="version-title">{{ $t('app.aside.latestVersion') }}</span>
+      <span>@{{ selectBetaVersion }}</span>
+    </span>
+    <vxe-link style="margin-left: 0.5em;" status="primary" :href="`https://github.com/x-extends/${packName}/releases`" target="_blank">更新日志</vxe-link>
   </div>
 </template>
 
@@ -149,7 +154,7 @@ getVersion()
 .version-list {
   font-size: 12px;
   margin-bottom: 10px;
-  & > .title {
+  .version-title {
     font-weight: 700;
     margin: 0 6px;
   }
