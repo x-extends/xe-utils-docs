@@ -70,6 +70,7 @@ export const useAppStore = defineStore('app', {
       docsVersion: '3',
       serveTY: new Date().getFullYear(),
       language: currLanguage,
+      resBaseUrl: import.meta.env.VITE_APP_RES_URL,
       siteBaseUrl: import.meta.env.VITE_APP_SITE_BASE_URL,
       pluginBuyUrl: import.meta.env.VITE_APP_PLUGIN_BUY_URL,
       pluginDocsUrl: import.meta.env.VITE_APP_PLUGIN_DOCS_URL,
@@ -98,6 +99,7 @@ export const useAppStore = defineStore('app', {
     uiCDNLib: handleLibVersion('vxe-pc-ui'),
     tableCDNLib: handleLibVersion('vxe-table'),
     designCDNLib: handleLibVersion('vxe-design'),
+    ganttCDNLib: handleLibVersion('vxe-gantt'),
     pluginExportPdfCDNLib: handleLibVersion('@vxe-ui/plugin-export-pdf'),
     pluginExportXlsxCDNLib: handleLibVersion('@vxe-ui/plugin-export-xlsx'),
     pluginMenuCDNLib: handleLibVersion('@vxe-ui/plugin-menu'),
@@ -107,6 +109,8 @@ export const useAppStore = defineStore('app', {
     pluginRenderElementCDNLib: handleLibVersion('@vxe-ui/plugin-render-element'),
     pluginRenderNaiveCDNLib: handleLibVersion('@vxe-ui/plugin-render-naive'),
     pluginRenderIViewCDNLib: handleLibVersion('@vxe-ui/plugin-render-iview'),
+    pluginRenderArcoCDNLib: handleLibVersion('@vxe-ui/plugin-render-arco'),
+    pluginRenderTDesignCDNLib: handleLibVersion('@vxe-ui/plugin-render-tdesign'),
     pluginRenderWangEditorCDNLib: handleLibVersion('@vxe-ui/plugin-render-wangeditor'),
     pluginValidatorCDNLib: handleLibVersion('@vxe-ui/plugin-validator'),
     pluginShortcutKeyCDNLib: handleLibVersion('@vxe-ui/plugin-shortcut-key')
@@ -139,7 +143,7 @@ export const useAppStore = defineStore('app', {
       } else {
         if (!i18nPromise[language]) {
           this.pageLoading = true
-          i18nPromise[language] = axios.get(`${this.siteBaseUrl}/i18n/${language}.json?v=${import.meta.env.VITE_APP_DATE_NOW}`).then((res) => {
+          i18nPromise[language] = axios.get(`${this.resBaseUrl}/i18n/${language}.json?v=${import.meta.env.VITE_APP_DATE_NOW}`).then((res) => {
             i18n.global.setLocaleMessage(language, res.data)
             this.language = language || 'zh-CN'
             VxeUI.setLanguage(language)
@@ -156,7 +160,7 @@ export const useAppStore = defineStore('app', {
     },
     getComponentI18nJSON () {
       if (!apiLangPromise[this.language]) {
-        apiLangPromise[this.language] = axios.get(`${this.siteBaseUrl}/component-api/i18n/${this.language}.json?v=${this.systemConfig.i18nVersion || import.meta.env.VITE_APP_DATE_NOW}`).then((res) => {
+        apiLangPromise[this.language] = axios.get(`${this.resBaseUrl}/component-api/i18n/${this.language}.json?v=${this.systemConfig.i18nVersion || import.meta.env.VITE_APP_DATE_NOW}`).then((res) => {
           i18n.global.mergeLocaleMessage(this.language, res.data)
         }).catch(() => {
           apiLangPromise[this.language] = null
@@ -166,7 +170,7 @@ export const useAppStore = defineStore('app', {
     },
     updateComponentApiJSON () {
       if (!simplifyaApiPromise) {
-        simplifyaApiPromise = fetch(`${this.siteBaseUrl}/component-api/${import.meta.env.VITE_APP_PACKAGE_NAME}-v${import.meta.env.VITE_APP_VXE_VERSION}/apiKeys.json?v=?v=${this.systemConfig[`v${import.meta.env.VITE_APP_VXE_VERSION}Version`] || import.meta.env.VITE_APP_DATE_NOW}`).then(res => {
+        simplifyaApiPromise = fetch(`${this.resBaseUrl}/component-api/${import.meta.env.VITE_APP_PACKAGE_NAME}-v${import.meta.env.VITE_APP_VXE_VERSION}/apiKeys.json?v=?v=${this.systemConfig[`v${import.meta.env.VITE_APP_VXE_VERSION}Version`] || import.meta.env.VITE_APP_DATE_NOW}`).then(res => {
           return res.json().then(data => {
             if (data) {
               const compApiMaps: Record<string, any[]> = {}
@@ -184,7 +188,7 @@ export const useAppStore = defineStore('app', {
     },
     updateAllComponentApiJSON () {
       if (!fullApiPromise) {
-        fullApiPromise = fetch(`${this.siteBaseUrl}/component-api/${import.meta.env.VITE_APP_PACKAGE_NAME}-v${import.meta.env.VITE_APP_VXE_VERSION}/apiMaps.json?v=?v=${this.systemConfig[`v${import.meta.env.VITE_APP_VXE_VERSION}Version`] || import.meta.env.VITE_APP_DATE_NOW}`).then(res => {
+        fullApiPromise = fetch(`${this.resBaseUrl}/component-api/${import.meta.env.VITE_APP_PACKAGE_NAME}-v${import.meta.env.VITE_APP_VXE_VERSION}/apiMaps.json?v=?v=${this.systemConfig[`v${import.meta.env.VITE_APP_VXE_VERSION}Version`] || import.meta.env.VITE_APP_DATE_NOW}`).then(res => {
           return res.json().then(data => {
             if (data) {
               this.compApiMaps = Object.assign({}, this.compApiMaps, data)
@@ -198,7 +202,7 @@ export const useAppStore = defineStore('app', {
     },
     getComponentApiConf (apiName: string) {
       if (!apiMapPromise[apiName]) {
-        apiMapPromise[apiName] = fetch(`${this.siteBaseUrl}/component-api/${import.meta.env.VITE_APP_PACKAGE_NAME}-v${import.meta.env.VITE_APP_VXE_VERSION}/api/vxe-${apiName}.json?v=?v=${this.systemConfig[`v${import.meta.env.VITE_APP_VXE_VERSION}Version`] || import.meta.env.VITE_APP_DATE_NOW}`)
+        apiMapPromise[apiName] = fetch(`${this.resBaseUrl}/component-api/${import.meta.env.VITE_APP_PACKAGE_NAME}-v${import.meta.env.VITE_APP_VXE_VERSION}/api/vxe-${apiName}.json?v=?v=${this.systemConfig[`v${import.meta.env.VITE_APP_VXE_VERSION}Version`] || import.meta.env.VITE_APP_DATE_NOW}`)
           .then(res => res.json())
           .catch(() => {
             apiMapPromise[apiName] = null
@@ -209,7 +213,7 @@ export const useAppStore = defineStore('app', {
     },
     getPluginAppList () {
       if (!pluginAppPromise) {
-        pluginAppPromise = fetch(`${this.siteBaseUrl}/component-api/vxe-plugin-app-list.json?v=?v=${import.meta.env.VITE_APP_DATE_NOW}`).then(res => {
+        pluginAppPromise = fetch(`${this.resBaseUrl}/component-api/vxe-plugin-app-list.json?v=?v=${import.meta.env.VITE_APP_DATE_NOW}`).then(res => {
           res.json().then(data => {
             this.pluginAppList = data.map(item => {
               item.label = i18n.global.t(`shopping.apps.${item.code}`)

@@ -153,6 +153,7 @@ const props = defineProps({
 
 const appStore = useAppStore()
 const isPluginDocs = computed(() => appStore.isPluginDocs)
+const resBaseUrl = computed(() => appStore.resBaseUrl)
 const siteBaseUrl = computed(() => appStore.siteBaseUrl)
 
 const showInstall = ref(false)
@@ -195,7 +196,7 @@ const previewUrl = computed(() => {
     if (/^http/.test(previewPath)) {
       return previewPath
     }
-    return `${siteBaseUrl.value}${previewPath}?v=${appStore.systemConfig.previewVersion}`
+    return `${resBaseUrl.value}${previewPath}?v=${appStore.systemConfig.previewVersion}`
   }
   return ''
 })
@@ -263,6 +264,12 @@ const loadOptionJsCode = () => {
         })
       }) || [])
     ]).then(([text1, ...impTexts]) => {
+      // 替换渲染器兼容方法
+      impTexts.forEach(impItem => {
+        if (impItem.name.indexOf('.renderer.') > -1) {
+          impItem.text = impItem.text.replace('(h, renderOpts, renderParams)', '(renderOpts, renderParams)')
+        }
+      })
       optionJsCodeText.value = text1 || i18n.global.t('app.docs.button.noExample')
       importOptionJsCodes.value = impTexts || i18n.global.t('app.docs.button.noExample')
       optionJsLoading.value = false
@@ -295,6 +302,12 @@ const loadOptionTsCode = () => {
         })
       }) || [])
     ]).then(([text1, ...impTexts]) => {
+      // 替换渲染器兼容方法
+      impTexts.forEach(impItem => {
+        if (impItem.name.indexOf('.renderer.') > -1) {
+          impItem.text = impItem.text.replace('(h, renderOpts, renderParams)', '(renderOpts, renderParams)')
+        }
+      })
       optionTsCodeText.value = text1 || i18n.global.t('app.docs.button.noExample')
       importOptionTsCodes.value = impTexts || i18n.global.t('app.docs.button.noExample')
       optionTsLoading.value = false
