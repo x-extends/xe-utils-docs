@@ -145,7 +145,8 @@ gulp.task('build_all_docs', gulp.series('clear_docs_temp', 'copy_docs_index', 'b
 
 gulp.task('build_v3_zip', () => {
   return gulp.src([
-    'docs/v3/**'
+    'docs/v3/**',
+    'docs/*'
   ], { base: './docs/' })
     .pipe(zip('docs_util3.zip'))
     .pipe(gulp.dest('./'))
@@ -153,6 +154,6 @@ gulp.task('build_v3_zip', () => {
 
 gulp.task('build_all_zip', () => {
   return gulp.src('docs/**')
-    .pipe(zip('util_docs.zip'))
+    .pipe(zip('docs_all.zip'))
     .pipe(gulp.dest('./'))
 })
