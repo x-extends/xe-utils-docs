@@ -72,24 +72,24 @@ gulp.task('clear_docs_temp', () => {
 
 gulp.task('copy_v3_temp', () => {
   return gulp.src('v3/dist/**')
-    .pipe(gulp.dest('_temp/xe-utils'))
+    .pipe(gulp.dest('_temp/v3'))
 })
 gulp.task('copy_v3_index', gulp.series('copy_v3_temp', () => {
   return gulp.src('v3/dist/index.html')
     .pipe(replace('</head>', enableAd ? `${adScript}${isForceAd ? adCheckScript : ''}</head>`: '</head>'))
     .pipe(replace('</body>', `${enableSponsors ? ssTmplScript : ''}${ enableSponsors ? sponsorsTmplScript : ''}${enableAd ? adTmplScript : ''}</body>`))
-    .pipe(gulp.dest('_temp/xe-utils'))
+    .pipe(gulp.dest('_temp/v3'))
     .pipe(rename({
       basename: '404'
     }))
-    .pipe(gulp.dest('_temp/xe-utils'))
+    .pipe(gulp.dest('_temp/v3'))
 }))
 gulp.task('copy_v3_docs', gulp.series('copy_v3_index', () => {
-  return gulp.src('_temp/xe-utils/**')
-    .pipe(gulp.dest('docs/xe-utils'))
+  return gulp.src('_temp/v3/**')
+    .pipe(gulp.dest('docs/v3'))
 }, () => {
   return gulp.src([
-    '_temp/xe-utils/**/*.html',
+    '_temp/v3/**/*.html',
   ], { base: './_temp/' })
     .pipe(replace('</head>', `${hmScript}</head>`))
     .pipe(gulp.dest('docs'))
@@ -100,7 +100,7 @@ gulp.task('copy_docs_index', gulp.series('copy_v3_index', () => {
     .pipe(gulp.dest('docs'))
 }, () => {
   return gulp.src([
-    '_temp/xe-utils/**/*.html'
+    '_temp/v3/**/*.html'
   ], { base: './_temp/' })
     .pipe(replace('</head>', `${hmScript}</head>`))
     .pipe(gulp.dest('docs'))
@@ -123,15 +123,15 @@ gulp.task('build_css_unicode', () => {
 
 gulp.task('build_latest_docs', () => {
   return gulp.src([
-    'docs/xe-utils/*.html',
-    'docs/xe-utils/*.ico',
-    'docs/xe-utils/*.png',
-    'docs/xe-utils/*.txt'
+    'docs/v3/*.html',
+    'docs/v3/*.ico',
+    'docs/v3/*.png',
+    'docs/v3/*.txt'
   ])
     .pipe(gulp.dest('docs'))
 })
 
-gulp.task('build_v3_docs', gulp.series('clear_docs_temp', 'copy_v3_docs', 'build_css_unicode', () => {
+gulp.task('build_v3_docs', gulp.series('clear_docs_temp', 'copy_v3_docs', 'build_latest_docs', 'build_css_unicode', () => {
   return del([
     '_temp'
   ], { force: true })
@@ -145,7 +145,7 @@ gulp.task('build_all_docs', gulp.series('clear_docs_temp', 'copy_docs_index', 'b
 
 gulp.task('build_v3_zip', () => {
   return gulp.src([
-    'docs/xe-utils/**'
+    'docs/v3/**'
   ], { base: './docs/' })
     .pipe(zip('docs_util3.zip'))
     .pipe(gulp.dest('./'))
