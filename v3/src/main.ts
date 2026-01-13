@@ -54,7 +54,7 @@ declare global {
   }
 }
 
-axios.defaults.baseURL = import.meta.env.VITE_APP_TEST_API_URL
+axios.defaults.baseURL = import.meta.env.VITE_APP_PUBLIC_API_URL
 
 // VxeUI.setI18n('zh-CN', zhCN)
 VxeUI.setI18n('zh-CHT', zhCHT)
