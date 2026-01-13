@@ -2,7 +2,7 @@
 
 ## 在线文档
 
-* XE Utils [https://vxeui.com/xe-utils/](https://vxeui.com/xe-utils/)
+* XE Utils [https://util.vxeui.com](https://util.vxeui.com)
 
 ## 帮助完善文档
 
