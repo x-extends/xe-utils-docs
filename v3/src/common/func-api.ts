@@ -1645,27 +1645,27 @@ export const funcGroup: FuncAPIGroup[] = [
                 `
                 // 默认树结构
                 let list1 = [
-                  {id: 1, name: '111'},
-                  {id: 2, parentId: 1, name: '222'},
-                  {id: 3, name: '333'},
-                  {id: 4, parentId: 2, name: '444'}
+                  {id: 1, xxx: '111'},
+                  {id: 2, parentId: 1, xxx: '222'},
+                  {id: 3, xxx: '333'},
+                  {id: 4, parentId: 2, xxx: '444'}
                 ]
                 XEUtils.toArrayTree(list1)
                 /*
                 [
                   {
                     "id":1,
-                    "name":"111",
+                    "xxx":"111",
                     "children":[
                       {
                         "id":2,
                         "parentId":1,
-                        "name":"222",
+                        "xxx":"222",
                         "children":[
                           {
                             "id":4,
                             "parentId":2,
-                            "name":"444",
+                            "xxx":"444",
                             "children":[]
                           }
                         ]
@@ -1674,7 +1674,7 @@ export const funcGroup: FuncAPIGroup[] = [
                   },
                   {
                     "id":3,
-                    "name":"333",
+                    "xxx":"333",
                     "children":[]
                   }
                 ]
@@ -1682,37 +1682,37 @@ export const funcGroup: FuncAPIGroup[] = [
 
                 // 返回带排序的树结构
                 let list2 = [
-                  {id: 1, name: '111', seq: 5},
-                  {id: 2, parentId: 1, name: '222', seq: 3},
-                  {id: 3, name: '333', seq: 6},
-                  {id: 4, parentId: 2, name: '444', seq: 2},
-                  {id: 5, parentId: 1, name: '555', seq: 1}
+                  {id: 1, xxx: '111', seq: 5},
+                  {id: 2, parentId: 1, xxx: '222', seq: 3},
+                  {id: 3, xxx: '333', seq: 6},
+                  {id: 4, parentId: 2, xxx: '444', seq: 2},
+                  {id: 5, parentId: 1, xxx: '555', seq: 1}
                 ]
                 XEUtils.toArrayTree(list2, {sortKey: 'seq'})
                 /*
                 [
                   {
                     "id":1,
-                    "name":"111",
+                    "xxx":"111",
                     "seq":5,
                     "children":[
                       {
                         "id":5,
                         "parentId":1,
-                        "name":"555",
+                        "xxx":"555",
                         "seq":1,
                         "children":[]
                       },
                       {
                         "id":2,
                         "parentId":1,
-                        "name":"222",
+                        "xxx":"222",
                         "seq":3,
                         "children":[
                           {
                             "id":4,
                             "parentId":2
-                            ,"name":"444",
+                            ,"xxx":"444",
                             "seq":2,
                             "children":[]
                           }
@@ -1722,7 +1722,7 @@ export const funcGroup: FuncAPIGroup[] = [
                   },
                   {
                     "id":3,
-                    "name":"333",
+                    "xxx":"333",
                     "seq":6,
                     "children":[]
                   }
@@ -1731,26 +1731,26 @@ export const funcGroup: FuncAPIGroup[] = [
 
                 // 自定义数据存放属性
                 let list3 = [
-                  {id: 1, name: '111'},
-                  {id: 2, parentId: 1, name: '222'},
-                  {id: 3, name: '333'},
-                  {id: 4, parentId: 2, name: '444'},
-                  {id: 5, parentId: 22, name: '555'}
+                  {id: 1, xxx: '111'},
+                  {id: 2, parentId: 1, xxx: '222'},
+                  {id: 3, xxx: '333'},
+                  {id: 4, parentId: 2, xxx: '444'},
+                  {id: 5, parentId: 22, xxx: '555'}
                 ]
                 XEUtils.toArrayTree(list3, {data: 'data'})
                 /*
                 [
                   {
-                    "data":{"id":1,"name":"111"},
+                    "data":{"id":1,"xxx":"111"},
                     "id":1,
                     "children":[
                       {
-                        "data":{"id":2,"parentId":1,"name":"222"},
+                        "data":{"id":2,"parentId":1,"xxx":"222"},
                         "id":2,
                         "parentId":1,
                         "children":[
                           {
-                            "data":{"id":4,"parentId":2,"name":"444"},
+                            "data":{"id":4,"parentId":2,"xxx":"444"},
                             "id":4,
                             "parentId":2,
                             "children":[]
@@ -1760,12 +1760,12 @@ export const funcGroup: FuncAPIGroup[] = [
                     ]
                   },
                   {
-                    "data":{"id":3,"name":"333"},
+                    "data":{"id":3,"xxx":"333"},
                     "id":3,
                     "children":[]
                   },
                   {
-                    "data":{"id":5,"parentId":22,"name":"555"},
+                    "data":{"id":5,"parentId":22,"xxx":"555"},
                     "id":5,
                     "parentId":22,
                     "children":[]
@@ -1775,26 +1775,26 @@ export const funcGroup: FuncAPIGroup[] = [
 
                 // 如果设置为严格模式，（非父子关联及冗余)的数据会被忽略
                 let list4 = [
-                  {id: 1, name: '111'},
-                  {id: 2, parentId: 1, name: '222'},
-                  {id: 3, name: '333'},
-                  {id: 4, parentId: 2, name: '444'},
-                  {id: 5, parentId: 22, name: '555'}
+                  {id: 1, xxx: '111'},
+                  {id: 2, parentId: 1, xxx: '222'},
+                  {id: 3, xxx: '333'},
+                  {id: 4, parentId: 2, xxx: '444'},
+                  {id: 5, parentId: 22, xxx: '555'}
                 ]
                 XEUtils.toArrayTree(list4, {strict: true, parentKey: 'parentId', key: 'id', children: 'children', data: 'data'})
                 /*
                 [
                   {
-                    "data":{"id":1,"name":"111"},
+                    "data":{"id":1,"xxx":"111"},
                     "id":1,
                     "children":[
                       {
-                        "data":{"id":2,"parentId":1,"name":"222"},
+                        "data":{"id":2,"parentId":1,"xxx":"222"},
                         "id":2,
                         "parentId":1,
                         "children":[
                           {
-                            "data":{"id":4,"parentId":2,"name":"444"},
+                            "data":{"id":4,"parentId":2,"xxx":"444"},
                             "id":4,
                             "parentId":2,
                             "children":[]
@@ -1804,7 +1804,7 @@ export const funcGroup: FuncAPIGroup[] = [
                     ]
                   },
                   {
-                    "data":{"id":3,"name":"333"},
+                    "data":{"id":3,"xxx":"333"},
                     "id":3,
                     "children":[]
                   }
@@ -1831,17 +1831,17 @@ export const funcGroup: FuncAPIGroup[] = [
                 let list1 = [
                   {
                     "id":1,
-                    "name":"111",
+                    "xxx":"111",
                     "children":[
                       {
                         "id":2,
                         "parentId":1,
-                        "name":"222",
+                        "xxx":"222",
                         "children":[
                           {
                             "id":4,
                             "parentId":2,
-                            "name":"444",
+                            "xxx":"444",
                             "children":[]
                           }
                         ]
@@ -1850,32 +1850,32 @@ export const funcGroup: FuncAPIGroup[] = [
                   },
                   {
                     "id":3,
-                    "name":"333",
+                    "xxx":"333",
                     "children":[]
                   }
                 ]
                 XEUtils.toTreeArray(list1)
                 /*
                 [
-                  {id: 1, name: '111'},
-                  {id: 2, parentId: 1, name: '222'},
-                  {id: 4, parentId: 2, name: '444'}
-                  {id: 3, name: '333'}
+                  {id: 1, xxx: '111'},
+                  {id: 2, parentId: 1, xxx: '222'},
+                  {id: 4, parentId: 2, xxx: '444'}
+                  {id: 3, xxx: '333'}
                 ]
                 */
 
                 let list2 = [
                   {
-                    "data":{"id":1,"name":"111"},
+                    "data":{"id":1,"xxx":"111"},
                     "id":1,
                     "children":[
                       {
-                        "data":{"id":2,"parentId":1,"name":"222"},
+                        "data":{"id":2,"parentId":1,"xxx":"222"},
                         "id":2,
                         "parentId":1,
                         "children":[
                           {
-                            "data":{"id":4,"parentId":2,"name":"444"},
+                            "data":{"id":4,"parentId":2,"xxx":"444"},
                             "id":4,
                             "parentId":2,
                             "children":[]
@@ -1885,12 +1885,12 @@ export const funcGroup: FuncAPIGroup[] = [
                     ]
                   },
                   {
-                    "data":{"id":3,"name":"333"},
+                    "data":{"id":3,"xxx":"333"},
                     "id":3,
                     "children":[]
                   },
                   {
-                    "data":{"id":5,"parentId":22,"name":"555"},
+                    "data":{"id":5,"parentId":22,"xxx":"555"},
                     "id":5,
                     "parentId":22,
                     "children":[]
@@ -1899,11 +1899,11 @@ export const funcGroup: FuncAPIGroup[] = [
                 XEUtils.toTreeArray(list2, {data: 'data'})
                 /*
                 [
-                  {id: 1, name: '111'},
-                  {id: 2, parentId: 1, name: '222'},
-                  {id: 4, parentId: 2, name: '444'},
-                  {id: 3, name: '333'},
-                  {id: 5, parentId: 22, name: '555'}
+                  {id: 1, xxx: '111'},
+                  {id: 2, parentId: 1, xxx: '222'},
+                  {id: 4, parentId: 2, xxx: '444'},
+                  {id: 3, xxx: '333'},
+                  {id: 5, parentId: 22, xxx: '555'}
                 ]
                 */
                 `
