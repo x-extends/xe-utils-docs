@@ -6,7 +6,7 @@
           <div>一个纯原生 javaascript 工具类函数库。</div>
         </vxe-tip>
         <vxe-tip status="success">
-          <div class="tip">{{ pageTitle }} 是 <vxe-link :href="`https://github.com/x-extends/${packName}/blob/main/LICENSE`">MIT</vxe-link> 开源的，无论是个人还是企业商用都是使用完全免费的。</div>
+          <div class="tip">{{ packName }} 是 <vxe-link :href="`https://github.com/x-extends/${packName}/blob/main/LICENSE`">MIT</vxe-link> 开源的，无论是个人还是企业商用都是使用完全免费的。</div>
         </vxe-tip>
       </template>
 
@@ -44,6 +44,5 @@ import { useAppStore } from '@/store/app'
 
 const appStore = useAppStore()
 const packName = computed(() => appStore.packName)
-const pageTitle = computed(() => appStore.pageTitle)
 const utilCDNLib = computed(() => appStore.utilCDNLib)
 </script>
