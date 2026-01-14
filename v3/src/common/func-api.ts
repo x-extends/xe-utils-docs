@@ -1743,7 +1743,7 @@ export const funcGroup: FuncAPIGroup[] = [
                   {id: 1, xx1: '111', xx2: '222'},
                   {id: 2, parentId: 1, xx1: '222', xx2: '333'},
                   {id: 3, xx1: '333', xx2: '444'},
-                  {id: 4, parentId: 2, xx1: '444, xx2: '555'},
+                  {id: 4, parentId: 2, xx1: '444', xx2: '555'},
                   {id: 5, parentId: 22, xx1: '555', xx2: '666'}
                 ]
                 XEUtils.toArrayTree(list3, {data: 'data'})
