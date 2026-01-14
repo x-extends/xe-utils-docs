@@ -1632,14 +1632,14 @@ export const funcGroup: FuncAPIGroup[] = [
         desc: '',
         params: [
           ['属性', '描述', '默认值'],
-          ['strict', '是否严格模式，会去掉父子关联不存在数据，当子节点为空时将没有 children 属性', 'false'],
-          ['key', '节点键值', 'id'],
-          ['parentKey', '父节点键值', 'parentId'],
-          ['children', '子节点属性', 'children'],
-          ['mapChildren', '子节点映射属性', ''],
-          ['sortKey', '对树节点进行排序属性', ''],
-          ['reverse', 'sortKey不为空是有效，默认升序', 'false'],
-          ['data', '数据存放属性', 'null']
+          ['strict', '是否严格模式，会去掉父子关联不存在数据，当子节点为空时将没有 children 字段名', 'false'],
+          ['key', '主键字段名', 'id'],
+          ['parentKey', '关联父主键字段名', 'parentId'],
+          ['children', '自定义转换成树层级后的子节点字段名', 'children'],
+          ['mapChildren', '额外增加，自定义转换成树层级后的子节点映射字段名', ''],
+          ['sortKey', '对转换成树层级后的节点进行升序排序字段名', ''],
+          ['reverse', '是否将sortKey设置为倒序，默认升序', 'false'],
+          ['data', '额外增加，同时将每一行的数据对象单独存放到指定字段名中', 'null']
         ],
         codes: [
                 `
@@ -1820,9 +1820,11 @@ export const funcGroup: FuncAPIGroup[] = [
         desc: '',
         params: [
           ['属性', '描述', '默认值'],
-          ['children', '子节点属性', 'children'],
-          ['data', '数据存放属性', ''],
-          ['clear', '同时移除子节点属性', 'false']
+          ['children', '树层级子节点字段', 'children'],
+          ['key', '自定义转换后数组的主键字段名', 'id'],
+          ['parentKey', '自定义转换后数组的关联父主键字段名', 'parentId'],
+          ['data', '额外增加，同时将每一行的数据对象单独存放到指定字段名中', ''],
+          ['clear', '引用删除，同时移除对应的 children 字段名', 'false']
         ],
         codes: [
                 `
