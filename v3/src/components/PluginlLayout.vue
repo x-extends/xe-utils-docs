@@ -5,11 +5,16 @@
     </VxeLayoutHeader>
     <VxeLayoutContainer>
       <VxeLayoutAside class="layout-aside" width="360" :collapsed="!showLeft">
-        <PageAside />
+        <PageAside :navConfigList="navConfigList" />
       </VxeLayoutAside>
-      <VxeLayoutContainer class="layout-content-container page-container" vertical>
+      <VxeLayoutContainer class="layout-content-container" vertical>
         <VxeLayoutBody class="layout-body" show-backtop :backtop-config="backtopConfig">
-          <RouterView />
+          <template #default>
+            <RouterView />
+          </template>
+          <template #backtop-top>
+            <VxeButton status="success" icon="vxe-icon-wechat" title="企业版在线客服" circle shadow @click="wxKfEvent"></VxeButton>
+          </template>
         </VxeLayoutBody>
         <VxeLayoutFooter class="layout-footer">
           <PageFooter></PageFooter>
@@ -23,20 +28,31 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, reactive, provide } from 'vue'
+import { ref, computed, reactive, PropType, provide } from 'vue'
 import { VxeLayoutBodyPropTypes } from 'vxe-pc-ui'
+import { useAppStore } from '@/store/app'
 import { useRoute } from 'vue-router'
+import { NavVO } from '@/common/nav'
 import XEUtils from 'xe-utils'
 import PageHeader from '@/components/PageHeader.vue'
 import PageAside from '@/components/PageAside.vue'
 import PageFooter from '@/components/PageFooter.vue'
 
+const props = defineProps({
+  pluginType: String,
+  navConfigList: Array as PropType<NavVO[]>
+})
+
 const route = useRoute()
+
+const appStore = useAppStore()
+const pluginBuyUrl = computed(() => appStore.pluginBuyUrl)
 
 const showLeft = ref(true)
 
 const backtopConfig = reactive<VxeLayoutBodyPropTypes.BacktopConfig>({
-  circle: true
+  circle: true,
+  position: 'fixed'
 })
 
 const pageName = computed(() => {
@@ -47,57 +63,9 @@ const showOperBtn = computed(() => {
   return route.name === 'DocsApi'
 })
 
-provide('pluginType', route.query.pt || '')
-</script>
-
-<style lang="scss">
-.app-container {
-  .layout-content-container {
-    position: relative;
-    min-width: 800px;
-    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.12);
-  }
-  .layout-body {
-    & > .vxe-layout-body--inner {
-      position: relative;
-      padding: 16px 300px 16px 16px;
-    }
-  }
-  .layout-aside {
-    & > .vxe-layout-aside--inner {
-      overflow-y: scroll;
-    }
-  }
-  .app-container {
-    &.docs-api {
-      .layout-body {
-        height: 100%;
-      }
-      .layout-footer {
-        display: none;
-      }
-    }
-  }
-  .oper-wrapper {
-    position: absolute;
-    top: 46vh;
-    width: 16px;
-    .oper-btn {
-      height: 60px;
-      user-select: none;
-      padding: 0;
-      margin: 0;
-      cursor: pointer;
-      border: 1px solid var(--vxe-ui-docs-layout-border-color);
-      background: var(--vxe-ui-docs-layout-background-color);
-      z-index: 19;
-      &:active {
-        outline: 0;
-      }
-      &.type--button {
-        padding: 0;
-      }
-    }
-  }
+const wxKfEvent = () => {
+  open(`${pluginBuyUrl.value}?wx=1`)
 }
-</style>
+
+provide('pluginType', props.pluginType || '')
+</script>
