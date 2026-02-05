@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "update": "npm install --legacy-peer-deps",
-    "update:v3": "cd v3 && npm install --legacy-peer-deps",
+    "update": "pnpm install --no-frozen-lockfile",
+    "update:v3": "cd v3 && npm run update",
     "update:all": "npm run update:v3",
     "build:v3": "cd v3 && npm run build",
     "build:all": "npm run build:v3",
