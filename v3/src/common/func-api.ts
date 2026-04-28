@@ -1002,13 +1002,13 @@ export const funcGroup: FuncAPIGroup[] = [
       {
         name: 'throttle',
         args: 'callback, wait[, options]',
-        title: '节流函数；当被调用 n 毫秒后才会执行，如果在这时间内又被调用则至少每隔 n 秒毫秒调用一次该函数',
+        title: '节流函数；当被调用 n 毫秒后才会执行，如果在这时间内又被调用则至少每隔 n 毫秒调用一次该函数',
         desc: '',
         params: [],
         codes: [
                 `
                 function scrollEvent (evnt) {
-                  console.log('至少每隔wait秒毫秒之内只会调用一次')
+                  console.log('至少每隔 n 毫秒之内只会调用一次')
                 }
 
                 // 在计时结束之前执行
