@@ -2,22 +2,22 @@
   <div class="page-header">
     <div class="header-left">
       <a class="logo" :href="siteBaseUrl">
-        <img :src="`${siteBaseUrl}/logo.png`">
+        <img :src="`${resBaseUrl}/logo.png`">
         <span class="title">{{ pageTitle }}</span>
       </a>
-      <a :href='`https://gitee.com/x-extends/${packName}/stargazers`'>
+      <a class="pendant" :href='`https://gitee.com/x-extends/${packName}/stargazers`'>
         <img :src='`https://gitee.com/x-extends/${packName}/badge/star.svg?theme=gvp`' alt='star'>
       </a>
-      <a :href="`http://npm-stat.com/charts.html?package=${packName}`">
+      <a class="pendant" :href="`http://npm-stat.com/charts.html?package=${packName}`">
         <img :src="`https://img.shields.io/npm/dm/${packName}.svg`">
       </a>
-      <a :href="`https://github.com/x-extends/${packName}/stargazers`">
+      <a class="pendant" :href="`https://github.com/x-extends/${packName}/stargazers`">
         <img :src="`https://img.shields.io/github/stars/x-extends/${packName}.svg`">
       </a>
     </div>
     <div class="header-middle"></div>
     <div class="header-right">
-      <vxe-pulldown v-model="showPluginApp" show-popup-shadow>
+      <vxe-pulldown v-model="showPluginApp" class="switch-plugin" show-popup-shadow>
         <vxe-button class="system-menu-btn" mode="text" @click="togglePluginAppEvent">
           <span v-if="pluginType" class="system-menu-btn-text" style="color: var(--vxe-ui-font-primary-color);">{{ $t('app.header.morePlugin') }} - {{ currBuyPluginName }}</span>
           <span v-else class="system-menu-btn-text" style="color: var(--vxe-ui-font-primary-color);">{{ $t('app.header.pluginDocs') }}</span>
@@ -33,7 +33,7 @@
           </ul>
         </template>
       </vxe-pulldown>
-      <vxe-pulldown v-model="showSystemMenu" show-popup-shadow>
+      <vxe-pulldown v-model="showSystemMenu" class="switch-system" show-popup-shadow>
         <vxe-button class="system-menu-btn" mode="text" @click="toggleSystemMenuEvent">
           <span :class="['system-menu-btn-text', {'unread': showTopMenuMsgFlag}]">{{ $t('app.header.moreProducts') }}</span>
           <vxe-icon class="system-menu-btn-icon" name="arrow-down"></vxe-icon>
@@ -84,8 +84,8 @@
 
       <vxe-link v-if="!isPluginDocs" class="free-donation" status="primary" :router-link="{name: 'FreeDonation'}" :content="$t('app.header.supportUs')"></vxe-link>
 
-      <vxe-link class="git-btn" status="error" :href="giteeUrl" icon="vxe-icon-gitee-fill" target="_blank"></vxe-link>
-      <vxe-link class="git-btn" :href="githubUrl" icon="vxe-icon-github-fill" target="_blank"></vxe-link>
+      <vxe-link v-if="!isPluginDocs" class="git-btn" status="error" :href="giteeUrl" icon="vxe-icon-gitee-fill" target="_blank"></vxe-link>
+      <vxe-link v-if="!isPluginDocs" class="git-btn" :href="githubUrl" icon="vxe-icon-github-fill" target="_blank"></vxe-link>
     </div>
   </div>
 </template>
@@ -310,6 +310,12 @@ if (isPluginDocs.value) {
   .header-middle {
     flex-grow: 1;
   }
+  .switch-plugin,
+  .switch-system,
+  .switch-size,
+  .switch-primary-color {
+    display: none;
+  }
   .system-menu-btn,
   .switch-theme,
   .switch-primary-color,
@@ -371,6 +377,9 @@ if (isPluginDocs.value) {
       display: inline-block;
       vertical-align: middle;
     }
+  }
+  .pendant {
+    display: none;
   }
 }
 .switch-lang-item {
@@ -462,6 +471,23 @@ if (isPluginDocs.value) {
       padding: 0 8px;
       color: #606266;
       transform: scale(0.8);
+    }
+  }
+}
+@media screen and (min-width: 1400px) {
+  .page-header {
+    .switch-plugin,
+    .switch-system,
+    .switch-size,
+    .switch-primary-color {
+      display: block;
+    }
+  }
+}
+@media screen and (min-width: 1700px) {
+  .header-left {
+    .pendant {
+      display: block;
     }
   }
 }
