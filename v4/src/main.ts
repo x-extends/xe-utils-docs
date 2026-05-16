@@ -54,6 +54,8 @@ declare global {
   }
 }
 
+window.XEUtils = XEUtils
+
 axios.defaults.baseURL = import.meta.env.VITE_APP_PUBLIC_API_URL
 
 // VxeUI.setI18n('zh-CN', zhCN)
