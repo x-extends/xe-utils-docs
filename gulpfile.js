@@ -148,7 +148,7 @@ gulp.task('build_v4_zip', () => {
     'docs/v4/**',
     'docs/*'
   ], { base: './docs/' })
-    .pipe(zip('docs_util3.zip'))
+    .pipe(zip('docs_v4.zip'))
     .pipe(gulp.dest('./'))
 })
 
