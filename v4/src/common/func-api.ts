@@ -1311,6 +1311,8 @@ export const funcGroup: FuncAPIGroup[] = [
         params: [],
         codes: [
                 `
+                XEUtils.sample([11, 22, 33, 44, 55]) // 44
+                XEUtils.sample([11, 22, 33, 44, 55], 1) // [44]
                 XEUtils.sample([11, 22, 33, 44, 55], 3) // [22, 33, 55]
                 `
         ]
