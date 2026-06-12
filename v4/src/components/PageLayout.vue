@@ -4,18 +4,22 @@
       <PageHeader />
     </VxeLayoutHeader>
     <VxeLayoutContainer>
-      <VxeLayoutAside class="layout-aside" width="360" :collapsed="!showLeft">
+      <VxeLayoutAside class="layout-aside" :width="asideWidth" :collapse-width="1" :collapsed="!showLeft">
         <PageAside />
       </VxeLayoutAside>
       <VxeLayoutContainer class="layout-content-container page-container" vertical>
-        <VxeLayoutBody class="layout-body" show-backtop :backtop-config="backtopConfig">
-          <RouterView />
+        <VxeLayoutBody class="layout-body" :class="{'is-full': isFullView}" show-backtop :backtop-config="backtopConfig">
+          <div class="body-view">
+            <RouterView />
+          </div>
+          <VxeLayoutFooter class="layout-footer">
+            <PageFooter></PageFooter>
+          </VxeLayoutFooter>
         </VxeLayoutBody>
-        <VxeLayoutFooter class="layout-footer">
-          <PageFooter></PageFooter>
-        </VxeLayoutFooter>
         <div v-if="showOperBtn" class="oper-wrapper">
-          <vxe-button class="oper-btn" status="info" :icon="showLeft ? 'vxe-icon-arrow-left' : 'vxe-icon-arrow-right'" @click="showLeft = !showLeft"></vxe-button>
+          <div class="oper-btn" @click="showLeft = !showLeft">
+            <i :class="showLeft ? 'vxe-icon-arrow-left' : 'vxe-icon-arrow-right'"></i>
+          </div>
         </div>
       </VxeLayoutContainer>
     </VxeLayoutContainer>
@@ -34,6 +38,17 @@ import PageFooter from '@/components/PageFooter.vue'
 const route = useRoute()
 
 const showLeft = ref(true)
+const asideWidth = ref(360)
+
+if (window.innerWidth > 2000) {
+  asideWidth.value = 460
+} else if (window.innerWidth > 1600) {
+  asideWidth.value = 400
+} else if (window.innerWidth < 1000) {
+  asideWidth.value = 220
+} else if (window.innerWidth < 900) {
+  asideWidth.value = 200
+}
 
 const backtopConfig = reactive<VxeLayoutBodyPropTypes.BacktopConfig>({
   position: 'fixed',
@@ -44,8 +59,12 @@ const pageName = computed(() => {
   return route ? XEUtils.kebabCase(`${String(route.name).replace('VxeIcon', 'VxeIco')}`) : ''
 })
 
-const showOperBtn = computed(() => {
+const isFullView = computed(() => {
   return route.name === 'DocsApi'
+})
+
+const showOperBtn = computed(() => {
+  return true// route.name === 'DocsApi'
 })
 
 provide('pluginType', route.query.pt || '')
@@ -59,9 +78,21 @@ provide('pluginType', route.query.pt || '')
     box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.12);
   }
   .layout-body {
+    &.is-full {
+      .body-view {
+        height: 100%;
+        overflow: hidden;
+      }
+      .layout-footer {
+        display: none;
+      }
+    }
     & > .vxe-layout-body--inner {
       position: relative;
       padding: 16px 300px 16px 16px;
+    }
+    .body-view {
+      min-height: 80vh;
     }
   }
   .layout-aside {
@@ -82,21 +113,32 @@ provide('pluginType', route.query.pt || '')
   .oper-wrapper {
     position: absolute;
     top: 46vh;
-    width: 16px;
+    width: 0.68em;
+    font-size: 14px;
     .oper-btn {
-      height: 60px;
-      user-select: none;
-      padding: 0;
-      margin: 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      height: 3.2em;
+      width: 100%;
+      color: var(--vxe-ui-layout-background-color);
+      border-radius: 4px;
+      background-color: #8b8b8b;
+      border: 1px solid var(--vxe-ui-input-border-color);
+      pointer-events: all;
       cursor: pointer;
-      border: 1px solid var(--vxe-ui-docs-layout-border-color);
-      background: var(--vxe-ui-docs-layout-background-color);
-      z-index: 19;
-      &:active {
-        outline: 0;
+      user-select: none;
+      transition: all .1s ease-in-out;
+      &:hover {
+        color: #ffffff;
+        background-color: var(--vxe-ui-font-primary-color);
       }
-      &.type--button {
-        padding: 0;
+      &:active {
+        transform: scale(0.9);
+      }
+      i {
+        font-size: 0.5em;
       }
     }
   }
