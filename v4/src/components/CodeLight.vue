@@ -27,7 +27,7 @@
       </h2>
       <div v-show="showPreview" class="example-preview-body">
         <slot name="preview">
-          <vxe-image :key="previewUrl" :src="previewUrl" width="100%" mask-closable></vxe-image>
+          <vxe-image :key="previewUrl" :src="previewUrl" max-height="560" max-width="100%" mask-closable></vxe-image>
         </slot>
       </div>
     </div>
@@ -429,7 +429,7 @@ const toggleSetupTsVisible = () => {
 const runEvent = () => {
   const compPath = props.path
   const exampleBaeUrl = `${siteBaseUrl.value}${import.meta.env.BASE_URL}`
-  open(`${import.meta.VITE_APP_ONLINE_RUN_URL}?files=${btoa('@' + encodeURIComponent(`${exampleBaeUrl}example/js/${compPath}.vue`))}`)
+  open(`${import.meta.env.VITE_APP_ONLINE_RUN_URL}?files=${btoa('@' + encodeURIComponent(`${exampleBaeUrl}example/js/${compPath}.vue`))}`)
 }
 
 const copyCode = (content: string) => {
@@ -570,10 +570,6 @@ const openDocs = () => {
 .example-preview-body {
   padding: 20px 64px 0 64px;
   text-align: center;
-  & > img {
-    max-width: 100%;
-    max-height: 300px;
-  }
 }
 
 .example-install {
