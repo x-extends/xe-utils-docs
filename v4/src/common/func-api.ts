@@ -2691,14 +2691,23 @@ export const funcGroup: FuncAPIGroup[] = [
       },
       {
         name: 'round',
-        args: 'num, digits',
+        args: 'num, digits, awayZero',
         title: '将数值四舍五入',
         desc: '',
         params: [],
         codes: [
                 `
+                XEUtils.round(123.454, 2) // 123.45
                 XEUtils.round(123.455, 2) // 123.46
-                XEUtils.round(123.452, 2) // 123.45
+                XEUtils.round(123.456, 2) // 123.46
+
+                XEUtils.round(-123.454, 2) // -123.45
+                XEUtils.round(-123.455, 2) // -123.46
+                XEUtils.round(-123.456, 2) // -123.46
+                
+                XEUtils.round(-123.454, 2, false) // -123.45
+                XEUtils.round(-123.455, 2, false) // -123.45
+                XEUtils.round(-123.456, 2, false) // -123.46
                 `
         ]
       },
