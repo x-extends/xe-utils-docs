@@ -2494,6 +2494,23 @@ export const funcGroup: FuncAPIGroup[] = [
         ]
       },
       {
+        name: 'getWhatQuarter',
+        args: 'date, offsetYear [, offsetQuarter]',
+        title: '返回前几季度或后几季度的日期,可以指定月初(first)、月末(last)、天数，默认当前',
+        desc: '',
+        params: [],
+        codes: [
+                `
+                XEUtils.getWhatQuarter(new Date(), -1) // Sun Apr 05 2026 20:07:53 GMT+0800 (中国标准时间)
+                XEUtils.getWhatQuarter(1513735830000, -1) // Thu Jul 20 2017 10:10:30 GMT+0800 (中国标准时间)
+                XEUtils.getWhatQuarter('2017-12-20', -1) // Thu Jul 20 2017 00:00:00 GMT+0800 (中国标准时间)
+                XEUtils.getWhatQuarter('2017-12-20', 1) // Sat Jan 20 2018 00:00:00 GMT+0800 (中国标准时间)
+                XEUtils.getWhatQuarter('2017-12-20', 0, 'first') // Sun Oct 01 2017 00:00:00 GMT+0800 (中国标准时间)
+                XEUtils.getWhatQuarter('2017-12-20', 0, 'last') // Sun Dec 31 2017 23:59:59 GMT+0800 (中国标准时间)
+                `
+        ]
+      },
+      {
         name: 'getWhatMonth',
         args: 'date, offsetMonth [, offsetDay]',
         title: '返回前几月或后几月的日期,可以指定月初(first)、月末(last)、天数，默认当前',
@@ -2562,6 +2579,22 @@ export const funcGroup: FuncAPIGroup[] = [
         ]
       },
       {
+        name: 'getDayOfQuarter',
+        args: 'date [, offsetYear]',
+        title: '返回某个季度的天数,可以指定前几个季度或后几个季度，默认当前',
+        desc: '',
+        params: [],
+        codes: [
+                `
+                XEUtils.getDayOfQuarter(new Date(2017, 3, 1)) // 91
+                XEUtils.getDayOfQuarter(1513735830000) // 92
+                XEUtils.getDayOfQuarter('2017-12-20') // 92
+                XEUtils.getDayOfQuarter('2019-12-20', 1) // 91
+                XEUtils.getDayOfQuarter('2020-12-20') // 92
+                `
+        ]
+      },
+      {
         name: 'getYearDay',
         args: 'date',
         title: '返回某个年份的第几天',
@@ -2569,7 +2602,7 @@ export const funcGroup: FuncAPIGroup[] = [
         params: [],
         codes: [
                 `
-                XEUtils.getYearDay(new Date()) // 149
+                XEUtils.getYearDay(new Date(2017, 3, 1)) // 91
                 XEUtils.getYearDay('2017-01-20') // 20
                 XEUtils.getYearDay('2018-05-20') // 140
                 `
@@ -2583,7 +2616,7 @@ export const funcGroup: FuncAPIGroup[] = [
         params: [],
         codes: [
                 `
-                XEUtils.getYearWeek(new Date()) // 22
+                XEUtils.getYearWeek(new Date(2017, 3, 1)) // 13
                 XEUtils.getYearWeek('2017-01-20') // 3
                 XEUtils.getYearWeek('2018-05-20') // 20
                 `
@@ -2597,7 +2630,7 @@ export const funcGroup: FuncAPIGroup[] = [
         params: [],
         codes: [
                 `
-                XEUtils.getMonthWeek(new Date()) // 4
+                XEUtils.getMonthWeek(new Date(2017, 3, 1)) // 5
                 XEUtils.getMonthWeek('2017-01-20') // 3
                 XEUtils.getMonthWeek('2018-05-20') // 2
                 `
@@ -2611,7 +2644,7 @@ export const funcGroup: FuncAPIGroup[] = [
         params: [],
         codes: [
                 `
-                XEUtils.getDayOfMonth(new Date()) // 31
+                XEUtils.getDayOfMonth(new Date(2017, 3, 1)) // 30
                 XEUtils.getDayOfMonth(1513735830000) // 31
                 XEUtils.getDayOfMonth('2017-12-20') // 31
                 XEUtils.getDayOfMonth('2017-12-20', -1) // 30
