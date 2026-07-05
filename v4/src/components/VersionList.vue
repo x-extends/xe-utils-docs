@@ -1,19 +1,33 @@
 <template>
   <div v-if="pluginType && selectPluginVersion" class="version-list">
-    <span class="version-title">{{ $t('app.aside.stableVersion') }}</span>
-    <span>{{ pluginType }}@{{ selectPluginVersion }}</span>
-    <vxe-link :href="currBuyPluginBUrl" status="primary" target="_blank">{{ $t('app.aside.releaseTitle') }}</vxe-link>
+    <div class="version-item">
+      <div>
+        <span class="version-title">{{ $t('app.aside.stableVersion') }}</span>
+        <span>{{ pluginType }}@{{ selectPluginVersion }}</span>
+      </div>
+    </div>
+    <div class="version-btn">
+      <vxe-link style="margin-left: 0.5em;" status="primary" :href="currBuyPluginBUrl" target="_blank">{{ $t('app.aside.releaseTitle') }}</vxe-link>
+    </div>
   </div>
   <div v-else class="version-list">
-    <span>
-      <span class="version-title">{{ $t('app.aside.stableVersion') }}</span>
-      <span>{{ packName }}@{{ selectStableVersion }}</span>
-    </span>
-    <span v-if="showBetaVersion" style="margin-left: 0.5em;">
-      <span class="version-title">{{ $t('app.aside.latestVersion') }}</span>
-      <span>@{{ selectBetaVersion }}</span>
-    </span>
-    <vxe-link style="margin-left: 0.5em;" status="primary" :href="`https://github.com/x-extends/${packName}/releases`" target="_blank">更新日志</vxe-link>
+    <div class="version-item">
+      <div>
+        <span>
+          <span class="version-title">{{ $t('app.aside.stableVersion') }}</span>
+          <span>{{ packName }}@{{ selectStableVersion }}</span>
+        </span>
+      </div>
+      <div v-if="showBetaVersion">
+        <span>
+        <span class="version-title">{{ $t('app.aside.latestVersion') }}</span>
+          <span>@{{ selectBetaVersion }}</span>
+        </span>
+      </div>
+    </div>
+    <div class="version-btn">
+      <vxe-link style="margin-left: 1em;" status="primary" :href="`https://github.com/x-extends/${packName}/releases`" target="_blank">更新日志</vxe-link>
+    </div>
   </div>
 </template>
 
@@ -122,7 +136,7 @@ const getVersion = () => {
     axios.get(`${resBaseUrl.value}/component-api/vxe-plugin-version.json?v=${import.meta.env.VITE_APP_DATE_NOW}`).then(res => {
       const vData = res.data || {}
       const tags = vData[pluginType]
-      selectPluginVersion.value = tags[`v${appStore.docsVersion}-latest`]
+      selectPluginVersion.value = tags ? tags[`v${appStore.docsVersion}-latest`] : ''
     })
   }
   fetch(`${apiBaseUrl.value}/baseapi/api/npm/versions/${import.meta.env.VITE_APP_PACKAGE_NAME}`, { method: 'GET' })
@@ -154,13 +168,17 @@ getVersion()
 
 <style lang="scss" scoped>
 .version-list {
-  font-size: 12px;
-  margin-bottom: 10px;
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 0 auto 0.8em auto;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  .version-item {
+    flex-grow: 0;
+  }
   .version-title {
-    font-weight: 700;
     margin: 0 6px;
   }
   .stable-select {

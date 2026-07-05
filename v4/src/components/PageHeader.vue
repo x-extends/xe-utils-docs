@@ -5,19 +5,19 @@
         <img :src="`${resBaseUrl}/logo.png`">
         <span class="title">{{ pageTitle }}</span>
       </a>
-      <a class="pendant" :href='`https://gitee.com/x-extends/${packName}/stargazers`'>
+      <a  v-if="!isPluginDocs" class="pendant" :href='`https://gitee.com/x-extends/${packName}/stargazers`'>
         <img :src='`https://gitee.com/x-extends/${packName}/badge/star.svg?theme=gvp`' alt='star'>
       </a>
-      <a class="pendant" :href="`http://npm-stat.com/charts.html?package=${packName}`">
+      <a  v-if="!isPluginDocs" class="pendant" :href="`http://npm-stat.com/charts.html?package=${packName}`">
         <img :src="`https://img.shields.io/npm/dm/${packName}.svg`">
       </a>
-      <a class="pendant" :href="`https://github.com/x-extends/${packName}/stargazers`">
+      <a v-if="!isPluginDocs" class="pendant" :href="`https://github.com/x-extends/${packName}/stargazers`">
         <img :src="`https://img.shields.io/github/stars/x-extends/${packName}.svg`">
       </a>
     </div>
     <div class="header-middle"></div>
     <div class="header-right">
-      <vxe-pulldown v-model="showPluginApp" class="switch-plugin" show-popup-shadow>
+      <vxe-pulldown v-if="isPluginDocs" v-model="showPluginApp" class="switch-plugin" show-popup-shadow>
         <vxe-button class="system-menu-btn" mode="text" @click="togglePluginAppEvent">
           <span v-if="pluginType" class="system-menu-btn-text" style="color: var(--vxe-ui-font-primary-color);">{{ $t('app.header.morePlugin') }} - {{ currBuyPluginName }}</span>
           <span v-else class="system-menu-btn-text" style="color: var(--vxe-ui-font-primary-color);">{{ $t('app.header.pluginDocs') }}</span>
@@ -28,7 +28,9 @@
           <ul class="plugin-app-wrapper">
             <li v-for="(item, index) in pluginAppList" :key="index">
               <vxe-link :href="`${tablePluginDocsUrl}/${item.uri}`" :content="$t(`shopping.apps.${item.code}`)"></vxe-link>
-              <span v-if="item.isEnterprise" class="enterprise">{{ $t('app.header.pluginVersion') }}</span>
+              <span v-if="item.isStore" class="enterprise">{{ $t('app.header.pluginStore') }}</span>
+              <span v-else-if="item.isFree" class="free">{{ $t('app.header.freeVersion') }}</span>
+              <span v-else-if="item.isEnterprise" class="enterprise">{{ $t('app.header.enterpriseVersion') }}</span>
             </li>
           </ul>
         </template>
@@ -40,31 +42,45 @@
         </vxe-button>
 
         <template #dropdown>
-          <ul class="system-menu-wrapper">
-            <li v-for="(item, index) in systemMenuList" :key="index">
-              <vxe-link target="_blank" :href="item.href" :content="item.content"></vxe-link>
-              <span v-if="item.isStore" class="enterprise">{{ $t('app.header.pluginStore') }}</span>
-              <span v-else-if="item.isEnterprise" class="enterprise">{{ $t('app.header.enterpriseVersion') }}</span>
-            </li>
-          </ul>
+          <div class="system-menu-wrapper">
+            <div v-for="(conf, i) in systemMenuGroups" :key="i" class="system-menu-group">
+              <div class="system-menu-title">{{ $t(`app.header.menuGroup.${conf.group}`) }}</div>
+              <div class="system-menu-list">
+                <a v-for="(item, index) in conf.children" :key="index" target="_blank" :href="item.href" class="system-menu-item">
+                  <div class="system-menu-icon">
+                    <img :src="item.iconUrl">
+                  </div>
+                  <div class="system-menu-content">
+                    <div class="system-menu-name">
+                      <span>{{ item.content }}</span>
+                      <span v-if="item.isStore" class="enterprise">{{ $t('app.header.pluginStore') }}</span>
+                      <span v-else-if="item.isFree" class="free">{{ $t('app.header.freeVersion') }}</span>
+                      <span v-else-if="item.isEnterprise" class="enterprise">{{ $t('app.header.enterpriseVersion') }}</span>
+                    </div>
+                    <div v-if="item.version" class="system-menu-version">
+                      <span>稳定版：{{ item.version }}</span>
+                    </div>
+                    <div v-else-if="item.describe" class="system-menu-describe">
+                      <span>{{ item.describe }}</span>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
         </template>
       </vxe-pulldown>
 
-      <vxe-select v-model="currSysVersion" class="switch-version" size="mini" :options="sysVersionOptions" @change="vChangeEvent"></vxe-select>
+      <vxe-select v-model="currSysVersion" class="switch-version" :options="sysVersionOptions" @change="vChangeEvent"></vxe-select>
 
-      <vxe-switch
-        class="link switch-theme"
-        v-model="currTheme"
-        size="mini"
-        open-value="light"
-        :open-label="$t('app.base.light')"
-        close-value="dark"
-        :close-label="$t('app.base.dark')">
-      </vxe-switch>
+      <vxe-color-picker class="switch-primary-color" v-model="currPrimaryColor" :colors="colorList" show-eye-dropper click-to-copy></vxe-color-picker>
 
-      <vxe-color-picker class="switch-primary-color" v-model="currPrimaryColor" :colors="colorList" size="mini" show-eye-dropper click-to-copy></vxe-color-picker>
+      <vxe-radio-group v-model="currTheme" class="link switch-theme">
+        <vxe-radio-button checked-value="light" icon="vxe-icon-sunny"></vxe-radio-button>
+        <vxe-radio-button checked-value="dark" icon="vxe-icon-moon"></vxe-radio-button>
+      </vxe-radio-group>
 
-      <vxe-radio-group class="switch-size" v-model="currCompSize" :options="sizeOptions" type="button" size="mini"></vxe-radio-group>
+      <vxe-radio-group class="switch-size" v-model="currCompSize" :options="sizeOptions" type="button"></vxe-radio-group>
 
       <vxe-pulldown :options="langOptions" trigger="click" show-popup-shadow @option-click="langClickEvent">
         <vxe-button class="switch-lang-btn" mode="text" icon="vxe-icon-language-switch" :content="currLangLabel"></vxe-button>
@@ -80,7 +96,7 @@
       </vxe-pulldown>
 
       <a v-if="isPluginDocs" :class="['plugin-shopping', {'unread': showAuthMsgFlag}]" :href="currBuyPluginBUrl" target="_blank" @click="openPluginEvent">{{ $t('app.header.buyPlugin') }}</a>
-      <a v-else :class="['plugin-shopping', {'unread': showAuthMsgFlag}]" :href="currBuyPluginBUrl" target="_blank" @click="openPluginEvent">{{ $t('app.header.pluginStore') }}</a>
+      <!-- <a v-if="!isPluginDocs" :class="['plugin-shopping', {'unread': showAuthMsgFlag}]" :href="currBuyPluginBUrl" target="_blank" @click="openPluginEvent">{{ $t('app.header.pluginStore') }}</a> -->
 
       <vxe-link v-if="!isPluginDocs" class="free-donation" status="primary" :router-link="{name: 'FreeDonation'}" :content="$t('app.header.supportUs')"></vxe-link>
 
@@ -98,9 +114,39 @@ import { tablePluginDocsUrl } from '@/common/nav'
 import i18n from '@/i18n'
 import XEUtils from 'xe-utils'
 
+interface SystemMenuVO {
+  group: string
+  content: string
+  href: string
+  libName: string
+  type: string
+  version: string
+  iconUrl: string
+  describe: string
+  isEnterprise: boolean
+  isStore: boolean
+  isFree: boolean
+}
+
+interface SystemMenuGroupVO {
+  group: string
+  children: SystemMenuVO[]
+}
+
+interface PluginAppVO {
+  value: string
+  label: string
+  code: string
+  uri: string
+  isEnterprise: boolean
+  isStore: boolean
+  isFree: boolean
+}
+
 const appStore = useAppStore()
 const pageTitle = computed(() => appStore.pageTitle)
 const packName = computed(() => appStore.packName)
+const versionConfig = computed(() => appStore.versionConfig)
 const showTopMenuMsgFlag = computed(() => appStore.showTopMenuMsgFlag)
 const showAuthMsgFlag = computed(() => appStore.showAuthMsgFlag)
 const isExtendDocs = computed(() => appStore.isExtendDocs)
@@ -111,16 +157,10 @@ const siteBaseUrl = computed(() => appStore.siteBaseUrl)
 const pluginType = inject('pluginType', '' as string)
 
 const showPluginApp = ref(false)
-const pluginAppList = ref<{
-  value: string
-  label: string
-  code: string
-  uri: string
-  isEnterprise: boolean
-}[]>([])
+const pluginAppList = ref<PluginAppVO[]>([])
 
 const showSystemMenu = ref(false)
-const systemMenuList = ref<any[]>()
+const systemMenuList = ref<SystemMenuVO[]>()
 
 const prevSysVersion = ref(import.meta.env.VITE_APP_VXE_VERSION)
 const currSysVersion = ref(import.meta.env.VITE_APP_VXE_VERSION)
@@ -198,6 +238,28 @@ const giteeUrl = computed(() => {
   return `https://gitee.com/x-extends/${appStore.packName}`
 })
 
+const systemMenuGroups = computed(() => {
+  const menuGroups: SystemMenuGroupVO[] = []
+  XEUtils.each(XEUtils.groupBy(systemMenuList.value, 'group'), (children: SystemMenuVO[], group) => {
+    menuGroups.push({
+      group,
+      children: children.map(item => {
+        let version = ''
+        if (item.libName) {
+          const uiConf = versionConfig.value[item.libName]
+          version = `${item.libName}@${(uiConf ? uiConf.stable : '') || 'latest'}`
+        }
+        return {
+          ...item,
+          iconUrl: ['js', 'vue'].includes(item.type) ? `${resBaseUrl.value}/resource/other/${item.type}.png` : '',
+          version
+        }
+      })
+    })
+  })
+  return menuGroups
+})
+
 const sysVersionOptions = computed(() => {
   return systemVersionList.value.map(item => {
     return {
@@ -231,9 +293,9 @@ const vChangeEvent = () => {
   if (selectSysItem) {
     const oldItem = systemVersionList.value.find(item => item.version === prevSysVersion.value)
     if (oldItem && oldItem.isSync && selectSysItem.isSync) {
-      location.href = selectSysItem.url + location.hash
+      location.href = (selectSysItem.baseUrl || selectSysItem.url) + location.hash
     } else {
-      location.href = selectSysItem.url
+      location.href = (selectSysItem.baseUrl || selectSysItem.url)
     }
   }
 }
@@ -426,52 +488,91 @@ if (isPluginDocs.value) {
 .system-menu-btn-icon {
   font-size: 12px;
 }
+
 .system-menu-wrapper {
-  padding: 8px 0;
-  margin: 0;
-  list-style: none;
-  width: 360px;
-  border: 1px solid var(--vxe-ui-docs-layout-border-color);
-  & > li {
+  padding: 0.5em 1em;
+  width: 800px;
+}
+.system-menu-group {
+  padding-bottom: 0.5em;
+  .system-menu-title {
+    line-height: 2em;
+    color: var(--vxe-ui-font-secondary-color);
+  }
+  .system-menu-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .system-menu-item {
+    display: flex;
+    flex-direction: row;
     position: relative;
-    line-height: 28px;
-    padding: 0 16px;
-    font-size: 14px;
-    .enterprise {
-      display: inline-block;
-      height: 22px;
-      line-height: 22px;
-      background-color: #f6ca9d;
-      border-radius: 10px;
-      font-size: 12px;
-      padding: 0 8px;
-      color: #606266;
-      transform: scale(0.8);
+    width: 33%;
+    padding: 0.5em 0.8em;
+    margin: 0.2em 0;
+    border-radius: 4px;
+    text-decoration: none;
+    color: var(--vxe-ui-docs-font-color);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    &:hover {
+      background-color: var(--vxe-ui-base-hover-background-color);
     }
+  }
+  .system-menu-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding-right: 0.8em;
+    img {
+      max-width: 30px;
+      max-height: 30px;
+    }
+  }
+  .system-menu-content {
+    flex-grow: 1;
+  }
+  .system-menu-version,
+  .system-menu-describe {
+    font-size: 0.85em;
+    padding-top: 0.2em;
+    color: var(--vxe-ui-font-secondary-color);
   }
 }
 .plugin-app-wrapper {
+  width: 180px;
   padding: 8px 0;
   margin: 0;
   list-style: none;
-  width: 180px;
   border: 1px solid var(--vxe-ui-docs-layout-border-color);
   & > li {
     position: relative;
     line-height: 28px;
     padding: 0 16px;
     font-size: 14px;
-    .enterprise {
-      display: inline-block;
-      height: 22px;
-      line-height: 22px;
-      background-color: #f6ca9d;
-      border-radius: 10px;
-      font-size: 12px;
-      padding: 0 8px;
-      color: #606266;
-      transform: scale(0.8);
-    }
+  }
+}
+.system-menu-wrapper,
+.plugin-app-wrapper {
+  .free,
+  .enterprise {
+    display: inline-block;
+    height: 22px;
+    line-height: 22px;
+    border-radius: 10px;
+    font-size: 12px;
+    padding: 0 8px;
+    transform: scale(0.8);
+  }
+  .free {
+    color: #efebeb;
+    background-color: #3eb910;
+  }
+  .enterprise {
+    color: #606266;
+    background-color: #f6ca9d;
   }
 }
 @media screen and (min-width: 1400px) {

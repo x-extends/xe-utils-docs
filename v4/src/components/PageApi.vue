@@ -92,6 +92,9 @@ const loadList = () => {
     appStore.getComponentApiConf(currApiName),
     appStore.getComponentI18nJSON()
   ]).then(([data]) => {
+    if (currApiName !== apiName.value) {
+      return
+    }
     const treeList = XEUtils.clone(data || [], true)
     let firstI18nKey = ''
     XEUtils.eachTree(treeList, (item, i, items, path, parent, nodes) => {
@@ -155,7 +158,8 @@ const gridOptions = reactive<VxeGridProps<RowVO>>({
   },
   customConfig: {
     storage: true,
-    showSortMoveButton: true,
+    // showSortMoveButton: true,
+    showSortPutButton: true,
     checkMethod ({ column }) {
       if (['name', 'i18nValue'].includes(column.field)) {
         return false
@@ -167,6 +171,20 @@ const gridOptions = reactive<VxeGridProps<RowVO>>({
     transform: true,
     rowField: 'id',
     parentField: 'parentId'
+  },
+  exportConfig: {
+    filename () {
+      const currApiName = apiName.value
+      return `${currApiName} API`
+    },
+    isTreeAllExpanded: true
+  },
+  printConfig: {
+    sheetName () {
+      const currApiName = apiName.value
+      return `${currApiName} API`
+    },
+    isTreeAllExpanded: true
   },
   tooltipConfig: {
     showAll: true,
@@ -185,6 +203,8 @@ const gridOptions = reactive<VxeGridProps<RowVO>>({
     custom: true,
     refresh: true,
     zoom: true,
+    export: true,
+    print: true,
     refreshOptions: {
       query: loadList
     },
@@ -209,7 +229,7 @@ const columns = computed<VxeGridPropTypes.Columns>(() => {
       title: i18n.global.t('api.title.prop'),
       type: 'html',
       treeNode: true,
-      minWidth: 280,
+      minWidth: 380,
       titlePrefix: {
         content: i18n.global.t('api.title.propHelp')
       },
@@ -221,7 +241,7 @@ const columns = computed<VxeGridPropTypes.Columns>(() => {
       ],
       slots: { default: 'default_name' }
     },
-    { field: 'i18nValue', title: i18n.global.t('api.title.desc'), type: 'html', minWidth: 300 },
+    { field: 'i18nValue', title: i18n.global.t('api.title.desc'), type: 'html', minWidth: 360 },
     { field: 'type', title: i18n.global.t('api.title.type'), type: 'html', minWidth: 260 },
     { field: 'typeDesc', title: i18n.global.t('api.title.typeDesc'), type: 'html', minWidth: 260, visible: false },
     { field: 'enum', title: i18n.global.t('api.title.enum'), type: 'html', minWidth: 150 },
