@@ -2484,7 +2484,7 @@ export const funcGroup: FuncAPIGroup[] = [
         params: [],
         codes: [
                 `
-                XEUtils.getWhatYear(new Date(), -1) // Mon Nov 20 2017 00:00:00 GMT+0800 (中国标准时间)
+                XEUtils.getWhatYear(new Date(2017, 3, 1, 12, 30, 20), -1) // Fri Apr 01 2016 12:30:20 GMT+0800 (中国标准时间)
                 XEUtils.getWhatYear(1513735830000, -1) // Tue Dec 20 2016 10:10:30 GMT+0800 (中国标准时间)
                 XEUtils.getWhatYear('2017-12-20', -1) // Tue Dec 20 2016 00:00:00 GMT+0800 (中国标准时间)
                 XEUtils.getWhatYear('2017-12-20', 1) // Thu Dec 20 2018 00:00:00 GMT+0800 (中国标准时间)
@@ -2501,7 +2501,7 @@ export const funcGroup: FuncAPIGroup[] = [
         params: [],
         codes: [
                 `
-                XEUtils.getWhatQuarter(new Date(), -1) // Sun Apr 05 2026 20:07:53 GMT+0800 (中国标准时间)
+                XEUtils.getWhatQuarter(new Date(2017, 3, 1, 12, 30, 20), -1) // Sun Jan 01 2017 12:30:20 GMT+0800 (中国标准时间)
                 XEUtils.getWhatQuarter(1513735830000, -1) // Thu Jul 20 2017 10:10:30 GMT+0800 (中国标准时间)
                 XEUtils.getWhatQuarter('2017-12-20', -1) // Thu Jul 20 2017 00:00:00 GMT+0800 (中国标准时间)
                 XEUtils.getWhatQuarter('2017-12-20', 1) // Sat Jan 20 2018 00:00:00 GMT+0800 (中国标准时间)
@@ -2518,7 +2518,7 @@ export const funcGroup: FuncAPIGroup[] = [
         params: [],
         codes: [
                 `
-                XEUtils.getWhatMonth(new Date(), -1) // Mon Nov 20 2017 00:00:00 GMT+0800 (中国标准时间)
+                XEUtils.getWhatMonth(new Date(2017, 3, 1, 12, 30, 20), -1) // Wed Mar 01 2017 12:30:20 GMT+0800 (中国标准时间)
                 XEUtils.getWhatMonth(1513735830000, -1) // Mon Nov 20 2017 00:00:00 GMT+0800 (中国标准时间)
                 XEUtils.getWhatMonth('2017-12-20', -1) // Mon Nov 20 2017 00:00:00 GMT+0800 (中国标准时间)
                 XEUtils.getWhatMonth('2017-12-20', 1) // Sat Jan 20 2018 00:00:00 GMT+0800 (中国标准时间)
@@ -2535,7 +2535,7 @@ export const funcGroup: FuncAPIGroup[] = [
         params: [],
         codes: [
                 `
-                XEUtils.getWhatWeek(new Date(), -1) // Sun Dec 17 2017 00:00:00 GMT+0800 (中国标准时间)
+                XEUtils.getWhatWeek(new Date(2017, 3, 1, 12, 30, 20), -1) // Sat Mar 25 2017 12:30:20 GMT+0800 (中国标准时间)
                 XEUtils.getWhatWeek(1513735830000, -1) // Sun Dec 17 2017 00:00:00 GMT+0800 (中国标准时间)
                 XEUtils.getWhatWeek('2017-12-20', -1) // Sun Dec 17 2017 00:00:00 GMT+0800 (中国标准时间)
                 XEUtils.getWhatWeek('2017-12-20', 1) // Sun Dec 31 2017 00:00:00 GMT+0800 (中国标准时间)
@@ -2553,12 +2553,60 @@ export const funcGroup: FuncAPIGroup[] = [
         params: [],
         codes: [
                 `
-                XEUtils.getWhatDay(new Date(), -1) // Tue Dec 19 2017 00:00:00 GMT+0800 (中国标准时间)
+                XEUtils.getWhatDay(new Date(2017, 3, 1, 12, 30, 20), -1) // Fri Mar 31 2017 12:30:20 GMT+0800 (中国标准时间)
                 XEUtils.getWhatDay(1513735830000, -1) // Tue Dec 19 2017 00:00:00 GMT+0800 (中国标准时间)
                 XEUtils.getWhatDay('2017-12-20', -1) // Tue Dec 19 2017 00:00:00 GMT+0800 (中国标准时间)
                 XEUtils.getWhatDay('2017-12-20', 1) // Tue Dec 21 2017 00:00:00 GMT+0800 (中国标准时间)
                 XEUtils.getWhatDay('2017-12-20', 0, 'first') // Wed Dec 20 2017 00:00:00 GMT+0800 (中国标准时间)
                 XEUtils.getWhatDay('2017-12-20', 0, 'last') // Wed Dec 20 2017 23:59:59 GMT+0800 (中国标准时间)
+                `
+        ]
+      },
+      {
+        name: 'getWhatHours',
+        args: 'date, offsetHour [, offsetMode]',
+        title: '返回前几小时或后几小时的日期,可以指定0分(first)、59分(last)',
+        desc: '',
+        params: [],
+        codes: [
+                `
+                XEUtils.getWhatHours(new Date(2017, 3, 1, 12, 30, 20), -1) // Fri Mar 31 2017 12:30:20 GMT+0800 (中国标准时间)
+                XEUtils.getWhatHours('2017-12-20 12:30:20', -1) // Tue Dec 19 2017 12:30:20 GMT+0800 (中国标准时间)
+                XEUtils.getWhatHours('2017-12-20 12:30:20', 1) // Thu Dec 21 2017 12:30:20 GMT+0800 (中国标准时间)
+                XEUtils.getWhatHours('2017-12-20 12:30:20', 0, 'first') // Wed Dec 20 2017 00:00:00 GMT+0800 (中国标准时间)
+                XEUtils.getWhatHours('2017-12-20 12:30:20', 0, 'last') // Wed Dec 20 2017 23:59:59 GMT+0800 (中国标准时间)
+                `
+        ]
+      },
+      {
+        name: 'getWhatMinutes',
+        args: 'date, offsetMinute [, offsetMode]',
+        title: '返回前几分钟或后几分钟的日期,可以指定0秒(first)、59秒(last)',
+        desc: '',
+        params: [],
+        codes: [
+                `
+                XEUtils.getWhatMinutes(new Date(2017, 3, 1, 12, 30, 20), -1) // Sat Apr 01 2017 12:29:20 GMT+0800 (中国标准时间)
+                XEUtils.getWhatMinutes('2017-12-20 12:30:20', -1) // Wed Dec 20 2017 12:29:20 GMT+0800 (中国标准时间)
+                XEUtils.getWhatMinutes('2017-12-20 12:30:20', 1) // Wed Dec 20 2017 12:31:20 GMT+0800 (中国标准时间)
+                XEUtils.getWhatMinutes('2017-12-20 12:30:20', 0, 'first') // Wed Dec 20 2017 12:30:00 GMT+0800 (中国标准时间)
+                XEUtils.getWhatMinutes('2017-12-20 12:30:20', 0, 'last') // Wed Dec 20 2017 12:30:59 GMT+0800 (中国标准时间)
+                `
+        ]
+      },
+      {
+        name: 'getWhatSeconds',
+        args: 'date, offsetSecond [, offsetMode]',
+        title: '返回前几秒或后几秒的日期,可以指定0毫秒(first)、999毫秒(last)',
+        desc: '',
+        params: [],
+        codes: [
+                `
+                XEUtils.getWhatSeconds(new Date(2017, 3, 1, 12, 30, 20), -1) // Sat Apr 01 2017 12:30:19 GMT+0800 (中国标准时间)
+                XEUtils.getWhatSeconds('2017-12-20 12:30:20', -1) // Wed Dec 20 2017 12:30:19 GMT+0800 (中国标准时间)
+                XEUtils.getWhatSeconds('2017-12-20 12:30:20', 1) // Wed Dec 20 2017 12:30:21 GMT+0800 (中国标准时间)
+                XEUtils.getWhatSeconds('2017-12-20 12:30:20', 0, 'first') //Wed Dec 20 2017 12:30:20 GMT+0800 (中国标准时间)
+                XEUtils.getWhatSeconds('2017-12-20 12:30:20', 0, 'last') // Wed Dec 20 2017 12:30:20 GMT+0800 (中国标准时间)
                 `
         ]
       },
@@ -2570,7 +2618,7 @@ export const funcGroup: FuncAPIGroup[] = [
         params: [],
         codes: [
                 `
-                XEUtils.getDayOfYear(new Date()) // 365
+                XEUtils.getDayOfYear(new Date(2017, 3, 1, 12, 30, 2)) // 365
                 XEUtils.getDayOfYear(1513735830000) // 365
                 XEUtils.getDayOfYear('2017-12-20') // 365
                 XEUtils.getDayOfYear('2019-12-20', 1) // 366
