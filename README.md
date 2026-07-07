@@ -4,7 +4,7 @@
 
 * XE Utils [https://util.vxeui.com](https://util.vxeui.com)
 
-## 帮助完善文档1
+## 帮助完善文档
 
 欢迎提交 [PR](https://github.com/x-extends/xe-utils-docs/pulls) 帮助完善文档
 
