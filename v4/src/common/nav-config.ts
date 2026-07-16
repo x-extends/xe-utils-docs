@@ -4,6 +4,7 @@ import { funcGroup } from './func-api'
 export const navConfigList: NavVO[] = [
   {
     i18nKey: 'app.aside.menu.guide',
+    icon: 'vxe-icon-rich-text',
     isExpand: true,
     children: [
       {
@@ -26,6 +27,7 @@ funcGroup.forEach(group => {
     children: group.children.map(item => {
       return {
         title: item.name,
+        icon: 'vxe-icon-doc-search',
         routerLink: { name: 'DocsApi', params: { name: item.name } },
         describe: item.title,
         isSelfAPI: true
