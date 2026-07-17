@@ -4,6 +4,9 @@ import RouteLayout from '@/components/RouteLayout.vue'
 import PageLayout from '@/components/PageLayout.vue'
 
 import StartUtilInstall from '@/views/start/useUtil/install/CodeExample.vue'
+import StartUtilCDN from '@/views/start/useUtil/cdn/CodeExample.vue'
+import StartConfig from '@/views/start/config/CodeExample.vue'
+
 import FreeDonation from '@/views/start/FreeDonation.vue'
 import JoinSponsor from '@/views/start/JoinSponsor.vue'
 import EnterprisePreview from '@/views/start/EnterprisePreview.vue'
@@ -30,13 +33,13 @@ const routes: Array<RouteRecordRaw> = [
         component: RouteLayout,
         children: [
           { path: 'install', name: 'StartUtilInstall', component: StartUtilInstall },
-          { path: 'cdn', name: 'StartUtilCDN', component: () => import('@/views/start/useUtil/cdn/CodeExample.vue') }
+          { path: 'cdn', name: 'StartUtilCDN', component: StartUtilCDN }
         ]
       },
       {
         path: 'globalConfig',
         name: 'StartConfig',
-        component: () => import('@/views/start/config/CodeExample.vue')
+        component: StartConfig
       },
       {
         path: 'freeDonation',
