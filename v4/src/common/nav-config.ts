@@ -9,6 +9,7 @@ export const navConfigList: NavVO[] = [
     children: [
       {
         i18nKey: 'app.aside.menu.insrall',
+        icon: 'vxe-icon-rich-text',
         isExpand: true,
         children: [
           { i18nKey: 'app.aside.menu.useNPM', routerLink: { name: 'StartUtilInstall' } },
@@ -24,6 +25,7 @@ funcGroup.forEach(group => {
   navConfigList.push({
     title: group.label,
     isExpand: group.expand,
+    icon: 'vxe-icon-tools',
     children: group.children.map(item => {
       return {
         title: item.name,
