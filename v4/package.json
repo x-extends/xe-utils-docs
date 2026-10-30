@@ -7,9 +7,9 @@
     "update": "pnpm install --no-frozen-lockfile",
     "serve": "vite",
     "build": "vue-tsc && vite build && gulp build_examples",
-    "lint:es": "eslint src/**",
+    "lint:es": "eslint src",
     "lint:ox": "oxfmt --check src/**",
-    "esfix": "eslint --fix src/**",
+    "esfix": "eslint --fix src",
     "oxfix": "oxfmt src/** --write"
   },
   "dependencies": {
