@@ -6,7 +6,11 @@
   "scripts": {
     "update": "pnpm install --no-frozen-lockfile",
     "serve": "vite",
-    "build": "vue-tsc && vite build && gulp build_examples"
+    "build": "vue-tsc && vite build && gulp build_examples",
+    "lint:es": "eslint src/**",
+    "lint:ox": "oxfmt --check src/**",
+    "esfix": "eslint --fix src/**",
+    "oxfix": "oxfmt src/** --write"
   },
   "dependencies": {
     "axios": "~1.20.0",
