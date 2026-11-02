@@ -44,7 +44,7 @@ export default defineConfig(({ mode, command }) => {
       assetsDir: 'static',
       rollupOptions: {
         // 不打包依赖
-        axios: ['axios', 'highlight.js'],
+        external: ['axios', 'highlight.js'],
         plugins: [
           // 不打包依赖映射的对象
           externalGlobals({
